@@ -1,0 +1,271 @@
+{% extends "customerheader.html" %}
+{% block content %}
+
+<style>
+    body {
+        background: #000000;
+        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+    }
+
+    .checkout-container {
+        max-width: 1100px;
+        margin: 80px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        margin-bottom: 40px;
+        border-left: 4px solid #0070d1;
+        padding-left: 20px;
+    }
+
+    .page-title h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+    }
+
+    .page-title p {
+        color: #a1a1aa;
+        font-size: 0.95rem;
+    }
+
+    .card-box {
+        background: #0a0a0a;
+        border-radius: 4px;
+        padding: 30px;
+        border: 1px solid #1a1a1a;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 25px;
+        color: #0070d1;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 20px;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        background: #111;
+        color: #fff;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .input-field:focus {
+        border-color: #0070d1;
+        background: #151515;
+    }
+
+    .pay-option {
+        border: 1px solid #1a1a1a;
+        padding: 15px;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        background: #111;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #a1a1aa;
+    }
+
+    .pay-option:hover {
+        border-color: #333;
+        color: #fff;
+    }
+
+    .pay-option.active {
+        border-color: #0070d1;
+        background: rgba(0, 112, 209, 0.1);
+        color: #0070d1;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        color: #a1a1aa;
+    }
+
+    .summary-item strong {
+        color: #fff;
+    }
+
+    .btn-place {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 18px;
+        border-radius: 4px;
+        width: 100%;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+    .btn-place:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #1a1a1a;
+        margin: 20px 0;
+    }
+
+    label {
+        font-size: 0.75rem;
+        color: #71717a;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: 1px;
+    }
+</style>
+
+<div class="checkout-container">
+
+    <div class="page-title">
+        <h2>Secure Checkout</h2>
+        <p>Review your information and confirm your purchase.</p>
+    </div>
+
+    <form method="POST" action="{% url 'place_order' %}">
+        {% csrf_token %}
+
+        <div class="row g-4">
+
+            <div class="col-lg-7">
+
+                <div class="card-box">
+                    <h5 class="section-title">Shipping Information</h5>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Full Name</label>
+                            <input type="text" class="input-field" name="name" value="{{ customer.Customer_name }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Email Address</label>
+                            <input type="email" class="input-field" name="email" value="{{ customer.Email }}" required>
+                        </div>
+                    </div>
+
+                    <label>Street Address</label>
+                    <textarea class="input-field" name="address" rows="3" required>{{ customer.address }}</textarea>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Contact Number</label>
+                            <input type="text" class="input-field" name="phone" value="{{ customer.Contact }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Pincode</label>
+                            <input type="text" class="input-field" name="pincode" value="{{ customer.pincode }}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-box">
+                    <h5 class="section-title">Payment Method</h5>
+
+                    <div class="row g-3 text-center">
+                        <div class="col-4">
+                            <div class="pay-option active" onclick="selectPay('Card', this)">
+                                <i class="bi bi-credit-card d-block mb-2 fs-4"></i> Card
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="pay-option" onclick="selectPay('UPI', this)">
+                                <i class="bi bi-qr-code d-block mb-2 fs-4"></i> UPI
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="pay-option" onclick="selectPay('COD', this)">
+                                <i class="bi bi-cash d-block mb-2 fs-4"></i> COD
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="payment_type" id="payment_type" value="Card">
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <div class="card-box sticky-top" style="top: 100px;">
+                    <h5 class="section-title">Order Summary</h5>
+
+                    {% for item in cart_items %}
+                    <div class="summary-item">
+                        <div>
+                            <strong>{{ item.product.name }}</strong><br>
+                            <small class="text-secondary">Quantity: {{ item.quantity }}</small>
+                        </div>
+                        <div class="text-white">₹{{ item.total_price }}</div>
+                    </div>
+                    {% endfor %}
+
+                    <hr>
+
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span class="text-white">₹{{ total }}</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Logistics</span>
+                        <span class="text-success">Complimentary</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="summary-item">
+                        <strong class="fs-5">Grand Total</strong>
+                        <strong class="fs-5 text-white">₹{{ total }}</strong>
+                    </div>
+
+                    <button type="submit" class="btn-place">
+    Place Order
+</button>
+                    <div class="text-center mt-3">
+                        <small class="text-secondary" style="font-size: 10px;">
+                            <i class="bi bi-lock-fill me-1"></i> SSL ENCRYPTED SECURE TRANSACTION
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+function selectPay(method, el) {
+    document.querySelectorAll('.pay-option').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('payment_type').value = method;
+}
+</script>
+
+{% endblock %}

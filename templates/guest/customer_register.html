@@ -1,0 +1,254 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .register-wrapper {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 0;
+    }
+
+    .register-card {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 45px;
+        width: 100%;
+        max-width: 750px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .auth-title {
+        color: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+
+    .auth-subtitle {
+        color: #71717a;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 700;
+    }
+
+    .field-label {
+        color: #444;
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .form-control-custom, .form-select-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 12px 18px;
+        border-radius: 2px;
+        font-size: 0.85rem;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-control-custom:focus, .form-select-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    .form-select-custom {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23444' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 10px 10px;
+        appearance: none;
+    }
+
+    .btn-register {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 16px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.85rem;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    .btn-register:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 112, 209, 0.3);
+    }
+
+    .auth-footer {
+        margin-top: 30px;
+        text-align: center;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 25px;
+    }
+
+    .auth-link {
+        color: #0070d1;
+        font-weight: 800;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    .auth-link:hover {
+        color: #fff;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+        <div class="auth-header">
+            <h4 class="auth-title">System Enrollment</h4>
+            <span class="auth-subtitle">Establish User Credentials</span>
+        </div>
+
+        <form method="post" action="{% url 'customer_register' %}">
+            {% csrf_token %}
+
+            <input type="text" name="fake_username" style="display:none;">
+            <input type="password" name="fake_password" style="display:none;">
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="field-label">Legal Name</label>
+                    <input type="text" name="name" class="form-control-custom w-100"
+                           placeholder="FULL NAME"
+                           pattern="[A-Za-z ]+"
+                           oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')"
+                           required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label">System UID (Username)</label>
+                    <input type="text" name="username" class="form-control-custom w-100" placeholder="UNIQUE USERNAME" autocomplete="username" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label">Email Interface</label>
+                    <input type="email" name="email" class="form-control-custom w-100" placeholder="NAME@DOMAIN.COM" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label">Communication Link (Contact)</label>
+                    <input type="text" name="contact" class="form-control-custom w-100"
+                           placeholder="+91 XXXXX XXXXX"
+                           pattern="[0-9]{10}"
+                           maxlength="10"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"
+                           required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="field-label">Regional District</label>
+                    <select id="district_select" class="form-select-custom w-100" name="district" required>
+                        <option value="">SELECT DISTRICT</option>
+                        {% for district in districts %}
+                            <option value="{{ district.id }}">{{ district.name|upper }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="field-label">Base Location</label>
+                    <select id="location_select" class="form-select-custom w-100" name="location" required>
+                        <option value="">SELECT LOCATION</option>
+                        {% for location in locations %}
+                            <option value="{{ location.id }}">{{ location.name|upper }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="field-label">Postal Index (PIN)</label>
+                    <input type="text" name="pincode" class="form-control-custom w-100"
+                           placeholder="XXXXXX"
+                           pattern="[0-9]{6}"
+                           maxlength="6"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,6)"
+                           required>
+                </div>
+
+                <div class="col-12">
+                    <label class="field-label">Primary Residency (Address)</label>
+                    <textarea name="address" class="form-control-custom w-100" rows="2" placeholder="FULL RESIDENTIAL ADDRESS" required></textarea>
+                </div>
+
+                <div class="col-12">
+                    <label class="field-label">Access Protocol (Password)</label>
+                    <input type="password" name="password" class="form-control-custom w-100" placeholder="••••••••" autocomplete="new-password" required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <button type="submit" class="btn-register w-100">
+                        Finalize Enrollment
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <span class="text-secondary small text-uppercase" style="letter-spacing: 1px; font-size: 0.65rem;">
+                Existing record detected? 
+                <a href="{% url 'login' %}" class="auth-link ms-2">Initialize Login</a>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'jquery-3.7.1.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": '{{ csrf_token }}'}
+        });
+        $('#district_select').change(function () {
+            var districtId = $(this).val();
+            var $locationSelect = $('#location_select');
+            $locationSelect.empty();
+            $locationSelect.append('<option value="">SELECT LOCATION</option>');
+
+            if (!districtId) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '{% url "filllocation" %}',
+                data: { did: districtId },
+                dataType: 'json',
+                success: function(data) {
+                    if (data && data.length) {
+                        $.each(data, function(index, item) {
+                            $locationSelect.append('<option value="' + item.locationid + '">' + item.locationname.toUpperCase() + '</option>');
+                        });
+                    }
+                },
+                error: function() {
+                    console.error('Failed to load locations for the selected district.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

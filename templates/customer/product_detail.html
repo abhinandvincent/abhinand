@@ -1,0 +1,356 @@
+{% extends 'customerheader.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+body {
+    background: #000000;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+}
+
+.product-wrapper {
+    background: #0a0a0a;
+    border-radius: 4px;
+    padding: 40px;
+    border: 1px solid #1a1a1a;
+}
+
+.product-img {
+    width: 100%;
+    border-radius: 2px;
+    object-fit: cover;
+    border: 1px solid #1a1a1a;
+}
+
+.product-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.top-description {
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.product-price {
+    font-size: 1.8rem;
+    color: #0070d1;
+}
+
+.product-rating {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-rating .rating-stars {
+    color: #facc15;
+    letter-spacing: 2px;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.product-rating .rating-text {
+    color: #a1a1aa;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.divider {
+    height: 1px;
+    background: #1a1a1a;
+    margin: 25px 0;
+}
+
+.qty-wrapper {
+    display: flex;
+    align-items: center;
+    background: #111;
+    border: 1px solid #1a1a1a;
+}
+
+.qty-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+.qty-input {
+    width: 60px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: #fff;
+}
+
+.total-box {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.btn-cart, .btn-buy {
+    padding: 15px;
+    width: 100%;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-cart {
+    background: transparent;
+    border: 1px solid #fff;
+}
+
+.btn-buy {
+    background: #0070d1;
+    border: none;
+}
+
+.stock-text {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.reviews-wrapper {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 35px;
+    margin-top: 35px;
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 20px;
+}
+
+.reviews-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+
+.rating-summary {
+    color: #facc15;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.review-card {
+    border-bottom: 1px solid #1a1a1a;
+    padding: 18px 0;
+}
+
+.review-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.review-customer {
+    color: #fff;
+    font-weight: 700;
+}
+
+.review-stars {
+    color: #facc15;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+.review-text {
+    color: #a1a1aa;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.empty-reviews {
+    color: #71717a;
+    border: 1px dashed #1a1a1a;
+    border-radius: 4px;
+    padding: 30px;
+    text-align: center;
+}
+</style>
+
+<div class="container mt-5 pt-5 mb-5">
+<div class="row product-wrapper g-5">
+
+<div class="col-md-5">
+    <img src="{{ product.image.url }}" class="product-img">
+</div>
+
+<div class="col-md-7">
+
+    <h2 class="product-title">{{ product.name }}</h2>
+
+    <div class="top-description">
+        {{ product.description }}
+    </div>
+
+    <div class="mb-2">
+        <span class="product-price">₹<span id="price">{{ product.price }}</span></span>
+    </div>
+
+    <div class="product-rating">
+        <span class="rating-stars">{{ product.rating_stars }}</span>
+        <span class="rating-text">
+            {% if average_rating %}
+                {{ average_rating|floatformat:1 }} / 5 · {{ product.review_count }} Review{{ product.review_count|pluralize }}
+            {% else %}
+                No reviews yet
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="stock-text">
+        {% if product.quantity == 0 %}
+            <span style="color:#ef4444;">Out of Stock</span>
+        {% elif product.quantity < 5 %}
+            <span style="color:#ef4444;">Only {{ product.quantity }} left!</span>
+        {% else %}
+            <span style="color:#22c55e;">In Stock ({{ product.quantity }})</span>
+        {% endif %}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="mb-4">
+        <label class="text-secondary small">Quantity</label>
+        <div class="qty-wrapper">
+            <button type="button" class="qty-btn" onclick="decreaseQty()">-</button>
+            <input type="number" id="qty" value="1" min="1" max="{{ product.quantity }}" class="qty-input" onchange="updateTotal()">
+            <button type="button" class="qty-btn" onclick="increaseQty()">+</button>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <span class="text-secondary small">Subtotal</span>
+        <div class="total-box">₹<span id="total">{{ product.price }}</span></div>
+    </div>
+
+    <div class="row g-3">
+
+        {% if product.quantity == 0 %}
+            <div class="col-12">
+                <button disabled class="btn-cart" style="opacity:0.5;">
+                    Out of Stock
+                </button>
+            </div>
+        {% else %}
+
+        <div class="col-6">
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" id="hiddenQtyCart" value="1">
+                <button class="btn-cart">Add to Cart</button>
+            </form>
+        </div>
+
+        <div class="col-6">
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" id="hiddenQtyBuy" value="1">
+                <button class="btn-buy">Buy Now</button>
+            </form>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+</div>
+
+<div class="reviews-wrapper">
+    <div class="reviews-header">
+        <h3 class="reviews-title">Customer Reviews</h3>
+        {% if average_rating %}
+            <div class="rating-summary">
+                {{ average_rating|floatformat:1 }} / 5 · {{ reviews|length }} Review{{ reviews|length|pluralize }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-top">
+                <div>
+                    <div class="review-customer">{{ review.customer.Customer_name }}</div>
+                    <small class="text-secondary">{{ review.created_at|date:"d M Y" }}</small>
+                </div>
+                <div class="review-stars">
+                    {% if review.rating == 5 %}★★★★★{% endif %}
+                    {% if review.rating == 4 %}★★★★☆{% endif %}
+                    {% if review.rating == 3 %}★★★☆☆{% endif %}
+                    {% if review.rating == 2 %}★★☆☆☆{% endif %}
+                    {% if review.rating == 1 %}★☆☆☆☆{% endif %}
+                </div>
+            </div>
+            <p class="review-text">{{ review.feedback }}</p>
+        </div>
+    {% empty %}
+        <div class="empty-reviews">
+            No customer reviews yet.
+        </div>
+    {% endfor %}
+</div>
+</div>
+
+<script>
+
+function updateTotal() {
+    let price = parseFloat("{{ product.price }}");
+    let maxStock = parseInt("{{ product.quantity }}");
+    let qtyInput = document.getElementById('qty');
+    let qty = parseInt(qtyInput.value);
+
+    if (qty < 1 || isNaN(qty)) qty = 1;
+    if (qty > maxStock) {
+        qty = maxStock;
+        alert("Only " + maxStock + " items available!");
+    }
+    qtyInput.value = qty;
+    let total = price * qty;
+    document.getElementById('total').innerText = total.toLocaleString('en-IN');
+    document.getElementById('hiddenQtyCart').value = qty;
+    document.getElementById('hiddenQtyBuy').value = qty;
+}
+function increaseQty() {
+    let qty = document.getElementById('qty');
+    qty.value = parseInt(qty.value) + 1;
+    updateTotal();
+}
+
+function decreaseQty() {
+    let qty = document.getElementById('qty');
+    if (qty.value > 1) {
+        qty.value = parseInt(qty.value) - 1;
+        updateTotal();
+    }
+}
+
+</script>
+
+{% endblock %}

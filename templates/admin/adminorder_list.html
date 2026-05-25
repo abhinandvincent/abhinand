@@ -1,0 +1,92 @@
+{% extends 'admin/adminheader.html' %}
+{% block content %}
+
+<style>
+body {
+    background: #000;
+    color: #e5e7eb;
+}
+
+.card-dark {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 25px;
+}
+
+.table {
+    --bs-table-bg: #0a0a0a;
+    --bs-table-color: #e5e7eb;
+    --bs-table-border-color: #1a1a1a;
+    --bs-table-hover-bg: #111;
+    --bs-table-hover-color: #fff;
+    background: #000;
+    color: #e5e7eb;
+}
+
+.table > :not(caption) > * > * {
+    background-color: #0a0a0a;
+    color: #e5e7eb;
+    border-color: #1a1a1a;
+}
+
+.table th {
+    background-color: #0f0f0f;
+    color: #9ca3af;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.table td {
+    border-color: #1a1a1a;
+}
+
+.table tr:hover td {
+    background-color: #111;
+    color: #fff;
+}
+</style>
+
+<div class="container py-4">
+    <div class="card-dark mb-4">
+        <h4 class="text-white mb-3">Order History</h4>
+        <p class="text-secondary">Review all placed orders and open details for each order.</p>
+    </div>
+
+    <div class="card-dark">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.customer.Customer_name }}</td>
+                        <td>₹{{ order.total_amount }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>{{ order.created_at|date:'M d, Y H:i' }}</td>
+                        <td>
+                            <a href="{% url 'order_details' order.order_id %}" class="text-primary">View</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-secondary">No orders found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

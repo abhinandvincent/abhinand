@@ -1,0 +1,126 @@
+{% extends "customerheader.html" %}
+{% block content %}
+
+<style>
+    body {
+        background: #000000;
+        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+    }
+
+    .success-box {
+        max-width: 500px;
+        margin: 120px auto;
+        background: #0a0a0a;
+        padding: 60px 40px;
+        border-radius: 4px;
+        text-align: center;
+        border: 1px solid #1a1a1a;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Subtle top glow effect */
+    .success-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #0070d1;
+    }
+
+    .success-icon {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 30px;
+        border-radius: 50%;
+        background: rgba(0, 112, 209, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0070d1;
+        font-size: 35px;
+        border: 1px solid rgba(0, 112, 209, 0.3);
+        animation: pulse-blue 2s infinite;
+    }
+
+    @keyframes pulse-blue {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 112, 209, 0.4); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(0, 112, 209, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 112, 209, 0); }
+    }
+
+    .success-box h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+    }
+
+    .success-box p {
+        color: #a1a1aa;
+        font-size: 1rem;
+        margin-bottom: 35px;
+        line-height: 1.6;
+    }
+
+    .btn-home {
+        display: inline-block;
+        background: #0070d1;
+        color: #fff;
+        padding: 15px 40px;
+        border-radius: 2px;
+        text-decoration: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.85rem;
+        transition: 0.3s;
+    }
+
+    .btn-home:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .note {
+        margin-top: 35px;
+        font-size: 0.7rem;
+        color: #444;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 25px;
+    }
+</style>
+
+<div class="container">
+    <div class="success-box">
+
+        <div class="success-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h2>Order Confirmed</h2>
+
+        <p>
+            Your transaction was successful. We’ve sent a confirmation email and our logistics team is preparing your hardware.
+        </p>
+
+        <a href="{% url 'cuthome' %}" class="btn-home">
+            Continue Shopping
+        </a>
+
+        <div class="note">
+            Authenticated Secure Transaction
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

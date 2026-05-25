@@ -1,0 +1,174 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .category-grid-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+    }
+
+    .category-grid-card:hover {
+        transform: translateY(-8px);
+        border-color: #0070d1;
+        box-shadow: 0 10px 30px rgba(0, 112, 209, 0.15);
+    }
+
+    .image-container {
+        position: relative;
+        height: 240px;
+        width: 100%;
+        overflow: hidden;
+        background: #111;
+    }
+
+    .category-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+        transition: 0.5s ease;
+    }
+
+    .category-grid-card:hover .category-img {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    .category-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        padding: 30px 20px 20px;
+        text-align: center;
+    }
+
+    .category-title {
+        color: #fff;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .category-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 14px;
+        background: #050505;
+        border-top: 1px solid #1a1a1a;
+    }
+
+    .category-action-btn {
+        border: 1px solid #1a1a1a;
+        border-radius: 2px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-align: center;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: 0.3s ease;
+        width: 100%;
+        background: transparent;
+    }
+
+    .category-action-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .category-edit-btn {
+        border-color: #0070d1;
+        color: #7cc4ff;
+    }
+
+    .category-edit-btn:hover {
+        background: #0070d1;
+    }
+
+    .category-delete-btn {
+        border-color: #7f1d1d;
+        color: #fca5a5;
+    }
+
+    .category-delete-btn:hover {
+        background: #dc2626;
+        border-color: #dc2626;
+    }
+
+    .empty-state {
+        border: 1px dashed #1a1a1a;
+        border-radius: 4px;
+        padding: 60px;
+        text-align: center;
+        color: #444;
+    }
+
+    .header-section {
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 20px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    
+    <div class="header-section d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <h2 class="fw-900 text-white text-uppercase mb-1" style="letter-spacing: -1px;">Categories</h2>
+            <p class="text-secondary small mb-0">Manage and audit your global inventory classifications.</p>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for cat in categories %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="category-grid-card">
+                <div class="image-container">
+                    {% if cat.category_image %}
+                        <img src="{{ cat.category_image.url }}" class="category-img" alt="{{ cat.category_name }}">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-dark">
+                            <i class="bi bi-box-seam text-secondary fs-1"></i>
+                        </div>
+                    {% endif %}
+                   
+                    <div class="category-overlay">
+                        <h5 class="category-title">{{ cat.category_name }}</h5>
+                    </div>
+                </div>
+                <div class="category-actions">
+                    <a href="{% url 'edit_category' cat.category_id %}" class="category-action-btn category-edit-btn">
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    </a>
+                    <form method="POST" action="{% url 'delete_category' cat.category_id %}" class="m-0" onsubmit="return confirm('Delete this category and all products inside it?')">
+                        {% csrf_token %}
+                        <button type="submit" class="category-action-btn category-delete-btn">
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="bi bi-folder-x fs-1 mb-3 d-block"></i>
+                <p class="text-uppercase fw-bold small mb-0" style="letter-spacing: 2px;">No Classifications Detected</p>
+                <a href="{% url 'category' %}" class="text-primary small mt-2 d-inline-block">Initialize first category</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

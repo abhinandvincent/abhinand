@@ -1,0 +1,336 @@
+{% extends "customerheader.html" %}
+{% block content %}
+
+<style>
+    body {
+        background: #000000;
+        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+    }
+
+    .bag-page {
+        padding: 100px 20px;
+    }
+
+    .bag-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .bag-header {
+        margin-bottom: 50px;
+        border-left: 4px solid #0070d1; /* Sony Blue Accent */
+        padding-left: 20px;
+    }
+
+    .bag-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    .bag-header p {
+        color: #a1a1aa;
+        font-size: 0.95rem;
+        margin-top: 8px;
+    }
+
+    .bag-content {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 40px;
+    }
+
+    /* Item Cards */
+    .item-card {
+        display: flex;
+        gap: 25px;
+        background: #0a0a0a;
+        padding: 24px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        border: 1px solid #1a1a1a;
+        transition: 0.3s ease;
+    }
+
+    .item-card:hover {
+        border-color: #333;
+    }
+
+    .item-image {
+        width: 140px;
+        height: 140px;
+        border-radius: 2px;
+        overflow: hidden;
+        background: #111;
+        border: 1px solid #1a1a1a;
+    }
+
+    .item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .item-details {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .item-info h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .item-meta {
+        font-size: 0.85rem;
+        color: #71717a;
+        display: block;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Custom Select Styling */
+    .mac-select {
+        padding: 8px 14px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        background: #111;
+        color: #fff;
+        font-size: 0.9rem;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .mac-select:focus {
+        border-color: #0070d1;
+    }
+
+    .item-price {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .item-price span {
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: #fff;
+    }
+
+    .remove-btn {
+        font-size: 0.75rem;
+        color: #71717a;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .remove-btn:hover {
+        color: #ef4444;
+    }
+
+    /* Summary Section */
+    .summary-card {
+        background: #0a0a0a;
+        padding: 30px;
+        border-radius: 4px;
+        border: 1px solid #1a1a1a;
+        position: sticky;
+        top: 120px;
+    }
+
+    .summary-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 15px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        font-size: 0.95rem;
+        color: #a1a1aa;
+    }
+
+    .summary-row.total {
+        border-top: 1px solid #1a1a1a;
+        padding-top: 20px;
+        font-weight: 800;
+        color: #fff;
+        font-size: 1.4rem;
+    }
+
+    .btn-checkout {
+        display: block;
+        text-align: center;
+        background: #0070d1; /* Sony Blue */
+        color: #fff;
+        padding: 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-top: 25px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.85rem;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-checkout:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+    }
+
+    .empty-bag {
+        text-align: center;
+        padding: 100px 20px;
+        background: #0a0a0a;
+        border-radius: 4px;
+        border: 1px dashed #333;
+    }
+
+    .btn-link {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 30px;
+        border: 1px solid #fff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .btn-link:hover {
+        background: #fff;
+        color: #000;
+    }
+
+    @media (max-width: 900px) {
+        .bag-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="bag-page">
+    <div class="bag-container">
+
+        <div class="bag-header">
+            <h1>Your Selection</h1>
+            <p>Authorized Sony hardware ready for dispatch.</p>
+        </div>
+
+        <div class="bag-content">
+
+            <div class="bag-items">
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="item-card">
+
+                        <div class="item-image">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            {% endif %}
+                        </div>
+
+                        <div class="item-details">
+
+                            <div class="item-info">
+                                <h2>{{ item.product.name }}</h2>
+                                <span class="item-meta">
+                                    {{ item.product.category_id.category_name }}
+                                </span>
+
+                                <form method="POST" action="{% url 'update_cart' item.cart_id %}">
+                                    {% csrf_token %}
+                                    <label class="small text-secondary d-block mb-2">Quantity</label>
+                                    <select name="quantity" class="mac-select" onchange="this.form.submit()">
+                                        {% for i in "123456789"|make_list %}
+                                            <option value="{{ forloop.counter }}"
+                                                {% if item.quantity == forloop.counter %}selected{% endif %}>
+                                                {{ forloop.counter }}
+                                            </option>
+                                        {% endfor %}
+                                        <option value="10" {% if item.quantity == 10 %}selected{% endif %}>10</option>
+                                    </select>
+                                </form>
+                            </div>
+
+                            <div class="item-price">
+                                <span>₹{{ item.total_price }}</span>
+                                <a href="{% url 'remove_from_cart' item.cart_id %}" class="remove-btn">
+                                    <i class="bi bi-trash3 me-1"></i> Remove
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-bag">
+                        <i class="bi bi-cart-x fs-1 text-secondary mb-3 d-block"></i>
+                        <h2 class="text-white">Your cart is empty</h2>
+                        <p class="text-secondary">Discover the latest in Alpha and Audio technology.</p>
+                        <a href="{% url 'cutcategory' %}" class="btn-link">Return to Store</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="bag-summary">
+                <div class="summary-card">
+                    <h3>Order Summary</h3>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>₹{{ subtotal }}</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="text-success">Complimentary</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>GST (Estimated)</span>
+                        <span>Included</span>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>₹{{ total }}</span>
+                    </div>
+
+                    <a href="{% url 'checkout' %}" class="btn-checkout">
+                        Secure Checkout
+                    </a>
+                    
+                    <p class="text-center mt-3 text-secondary" style="font-size: 11px;">
+                        <i class="bi bi-shield-check me-1"></i> Authorized Sony Transaction
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

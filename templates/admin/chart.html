@@ -1,0 +1,258 @@
+{% extends 'admin/adminheader.html' %}
+{% block content %}
+
+<style>
+    .chart-page-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        border-left: 4px solid #0070d1;
+        padding-left: 18px;
+        margin-bottom: 30px;
+    }
+
+    .chart-layout {
+        display: grid;
+        grid-template-columns: minmax(280px, 420px) 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .admin-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 28px;
+    }
+
+    .chart-wrap {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto 24px;
+        aspect-ratio: 1;
+        position: relative;
+    }
+
+    #productPieChart {
+        width: 100%;
+        height: 100%;
+    }
+
+    .stat-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .stat-box {
+        border: 1px solid #1a1a1a;
+        padding: 16px;
+        border-radius: 4px;
+        background: #111;
+    }
+
+    .stat-label {
+        color: #71717a;
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .stat-value {
+        color: #fff;
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-top: 6px;
+    }
+
+    .chart-heading {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 18px;
+    }
+
+    .legend-item,
+    .product-row {
+        display: grid;
+        grid-template-columns: 16px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    .legend-item:last-child,
+    .product-row:last-child {
+        border-bottom: none;
+    }
+
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+    }
+
+    .product-name {
+        color: #e5e7eb;
+        font-weight: 700;
+    }
+
+    .product-meta {
+        color: #71717a;
+        font-size: 0.75rem;
+        margin-top: 3px;
+    }
+
+    .quantity-pill {
+        color: #fff;
+        border: 1px solid #0070d1;
+        border-radius: 2px;
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .empty-chart {
+        color: #71717a;
+        border: 1px dashed #1a1a1a;
+        border-radius: 4px;
+        padding: 70px 20px;
+        text-align: center;
+    }
+
+    @media (max-width: 992px) {
+        .chart-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<h2 class="chart-page-title">Ordered Product Pie Chart</h2>
+
+{% if product_orders %}
+<div class="chart-layout">
+    <div class="admin-card">
+        <div class="chart-heading">Product Order Share</div>
+        <div class="chart-wrap">
+            <canvas id="productPieChart" aria-label="Ordered product quantity pie chart"></canvas>
+        </div>
+
+        <div id="chartLegend"></div>
+
+        <div class="stat-row">
+            <div class="stat-box">
+                <div class="stat-label">Items Ordered</div>
+                <div class="stat-value">{{ total_quantity }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Order Value</div>
+                <div class="stat-value">₹{{ total_sales }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="chart-heading">Ordered Quantity By Product</div>
+        {% for item in product_orders %}
+            <div class="product-row">
+                <span class="legend-color" data-color-index="{{ forloop.counter0 }}"></span>
+                <div>
+                    <div class="product-name">{{ item.product_name }}</div>
+                    <div class="product-meta">Sales amount: ₹{{ item.sales_amount }}</div>
+                </div>
+                <span class="quantity-pill">{{ item.ordered_quantity }} Ordered</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="empty-chart">
+    <i class="bi bi-pie-chart fs-1 d-block mb-3"></i>
+    <h4 class="text-white">No Order Data Yet</h4>
+    <p class="mb-0">The pie chart will appear after customers place product orders.</p>
+</div>
+{% endif %}
+
+<script>
+    const labels = {{ chart_labels|safe }};
+    const values = {{ chart_values|safe }};
+    const colors = [
+        '#0070d1', '#22c55e', '#facc15', '#ef4444', '#a855f7',
+        '#14b8a6', '#f97316', '#60a5fa', '#e879f9', '#84cc16'
+    ];
+
+    document.querySelectorAll('[data-color-index]').forEach((item) => {
+        const index = Number(item.dataset.colorIndex);
+        item.style.backgroundColor = colors[index % colors.length];
+    });
+
+    const legend = document.getElementById('chartLegend');
+    if (legend && labels.length) {
+        labels.forEach((label, index) => {
+            const row = document.createElement('div');
+            const color = document.createElement('span');
+            const name = document.createElement('span');
+            const quantity = document.createElement('span');
+
+            row.className = 'legend-item';
+            color.className = 'legend-color';
+            color.style.backgroundColor = colors[index % colors.length];
+            name.className = 'product-name';
+            name.textContent = label;
+            quantity.className = 'quantity-pill';
+            quantity.textContent = values[index];
+
+            row.append(color, name, quantity);
+            legend.appendChild(row);
+        });
+    }
+
+    const canvas = document.getElementById('productPieChart');
+    if (canvas && values.length) {
+        const ctx = canvas.getContext('2d');
+        const size = canvas.parentElement.clientWidth;
+        const scale = window.devicePixelRatio || 1;
+        canvas.width = size * scale;
+        canvas.height = size * scale;
+        ctx.scale(scale, scale);
+
+        const center = size / 2;
+        const radius = (size / 2) - 8;
+        const total = values.reduce((sum, value) => sum + Number(value), 0);
+        let startAngle = -Math.PI / 2;
+
+        values.forEach((value, index) => {
+            const sliceAngle = (Number(value) / total) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(center, center);
+            ctx.arc(center, center, radius, startAngle, startAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = colors[index % colors.length];
+            ctx.fill();
+            startAngle += sliceAngle;
+        });
+
+        ctx.beginPath();
+        ctx.arc(center, center, radius * 0.52, 0, Math.PI * 2);
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 28px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(total, center, center - 4);
+        ctx.fillStyle = '#71717a';
+        ctx.font = '800 11px Inter, sans-serif';
+        ctx.fillText('ORDERED ITEMS', center, center + 18);
+    }
+</script>
+
+{% endblock %}

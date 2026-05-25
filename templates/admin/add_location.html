@@ -1,0 +1,143 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .admin-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        overflow: hidden;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header-accent {
+        background: #000;
+        border-bottom: 1px solid #1a1a1a;
+        padding: 30px 40px;
+    }
+
+    .form-control-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 15px 20px;
+        border-radius: 2px;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-control-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    /* Custom styling for the select dropdown arrow */
+    select.form-control-custom {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2371717a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1.25rem center;
+        background-size: 16px 12px;
+    }
+
+    .form-control-custom::placeholder {
+        color: #333;
+    }
+
+    .field-label {
+        color: #71717a;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .btn-submit {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 12px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: #444;
+        border: 1px solid #1a1a1a;
+        padding: 12px 25px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        margin-right: 10px;
+    }
+
+    .btn-reset:hover {
+        border-color: #333;
+        color: #71717a;
+    }
+</style>
+
+<div class="admin-card">
+    <div class="card-header-accent">
+        <h4 class="fw-800 mb-1 text-white text-uppercase" style="letter-spacing: -1px;">Register Hub Location</h4>
+        <p class="text-secondary small mb-0">Map a specific delivery hub to an established regional district.</p>
+    </div>
+
+    <div class="card-body p-5">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="field-label">Parent District</label>
+                    <select name="district" class="form-control-custom w-100" required>
+                        <option value="" disabled selected>SELECT REGION...</option>
+                        {% for d in districts %}
+                            <option value="{{ d.id }}" style="background: #0a0a0a;">{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label">Deployment Hub Name</label>
+                    <input type="text" name="location_name" class="form-control-custom w-100" placeholder="E.G. CENTRAL TERMINAL..." required>
+                </div>
+
+                <div class="col-12 mt-5 pt-4 d-flex justify-content-between align-items-center" style="border-top: 1px solid #1a1a1a;">
+                    <div class="d-flex align-items-center text-secondary" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">
+                        <i class="bi bi-geo-alt-fill me-2 text-primary"></i> 
+                        Infrastructure Validation Active
+                    </div>
+                    
+                    <div class="buttons">
+                        <button type="reset" class="btn-reset">Clear Data</button>
+                        <button type="submit" class="btn-submit">
+                            Authorize Location
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

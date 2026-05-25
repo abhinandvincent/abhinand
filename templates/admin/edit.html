@@ -1,0 +1,192 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- EDIT TERMINAL STYLING --- */
+    .edit-container {
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .edit-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 45px;
+        width: 100%;
+        max-width: 800px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .edit-header {
+        margin-bottom: 40px;
+        border-left: 3px solid #0070d1;
+        padding-left: 20px;
+    }
+
+    .edit-title {
+        color: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .edit-subtitle {
+        color: #71717a;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    /* --- FORM FIELDS --- */
+    .field-label {
+        color: #444;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .form-control-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 12px 18px;
+        border-radius: 2px;
+        font-size: 0.9rem;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-control-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    /* --- SPECIAL ELEMENTS --- */
+    .current-asset-info {
+        background: #0d0d0d;
+        border: 1px dashed #1a1a1a;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .asset-preview-sm {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 2px;
+        border: 1px solid #222;
+    }
+
+    /* --- ACTION BUTTONS --- */
+    .btn-update {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 15px 40px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    .btn-update:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 112, 209, 0.3);
+    }
+
+    .btn-cancel {
+        color: #444;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        transition: 0.3s;
+    }
+
+    .btn-cancel:hover {
+        color: #fff;
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-card">
+        <div class="edit-header">
+            <h4 class="edit-title">Modify Asset</h4>
+            <span class="edit-subtitle">Administrative Override: ID #{{ product.id }}</span>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <label class="field-label" for="product_name">Model Designation</label>
+                    <input type="text" class="form-control-custom w-100" id="product_name" name="product_name" value="{{ product.name }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="field-label" for="product_price">Asset Valuation (₹)</label>
+                    <input type="number" class="form-control-custom w-100" id="product_price" name="product_price" value="{{ product.price }}" step="0.01" required>
+                </div>
+
+                <div class="col-12">
+                    <label class="field-label" for="product_description">Technical Specifications</label>
+                    <textarea class="form-control-custom w-100" id="product_description" name="product_description" rows="4" required>{{ product.description }}</textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label" for="category">Functional Category</label>
+                    <select class="form-control-custom w-100" id="category" name="category" required style="appearance: auto;">
+                        <option value="">SELECT CATEGORY</option>
+                        {% for category in categories %}
+                            <option value="{{ category.category_id }}" {% if product.category and product.category.category_id == category.category_id %}selected{% endif %}>
+                                {{ category.category_name|upper }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="field-label" for="product_image">Update Visual Asset</label>
+                    <input type="file" class="form-control-custom w-100" id="product_image" name="product_image" style="padding: 9px 18px;">
+                </div>
+
+                {% if product.image %}
+                <div class="col-12">
+                    <div class="current-asset-info">
+                        <img src="{{ product.image.url }}" class="asset-preview-sm" alt="Current">
+                        <div>
+                            <span class="d-block text-secondary" style="font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;">Existing Asset Detected</span>
+                            <span class="text-white small fw-bold">{{ product.image.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-12 mt-5 d-flex align-items-center justify-content-between">
+                    <a href="{% url 'product_list' %}" class="btn-cancel">Abort Changes</a>
+                    <button type="submit" class="btn-update">Commit Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

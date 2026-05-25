@@ -1,0 +1,191 @@
+{% extends 'deliveryboy/boyheader.html' %}
+{% block content %}
+
+<style>
+.card-dark {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 25px;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.order-card {
+    background: #050505;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 18px;
+    transition: 0.3s ease;
+}
+
+.order-card:hover {
+    border-color: #0070d1;
+    transform: translateY(-3px);
+}
+
+.order-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+}
+
+.order-id {
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.status-badge {
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: #9ca3af;
+    height: fit-content;
+}
+
+.info-label {
+    color: #6b7280;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    color: #e5e7eb;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    margin-bottom: 12px;
+}
+
+.order-items {
+    margin: 0;
+    padding-left: 17px;
+}
+
+.order-items li {
+    margin-bottom: 4px;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 14px;
+    margin-top: 14px;
+}
+
+.total-value {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.btn-delivered {
+    background: #0070d1;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 12px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    width: 100%;
+    margin-top: 14px;
+}
+
+.btn-delivered:hover {
+    background: #005bb1;
+}
+
+.empty-state {
+    border: 1px dashed #1a1a1a;
+    border-radius: 6px;
+    padding: 50px;
+    text-align: center;
+    color: #6b7280;
+}
+</style>
+
+<div class="container-fluid py-4">
+    <div class="card-dark mb-4">
+        <h4 class="text-white mb-3">
+            {% if completed_view %}Delivered Orders{% else %}Assigned Orders{% endif %}
+        </h4>
+        <p class="text-secondary mb-0">
+            {% if completed_view %}Orders already marked as delivered.{% else %}Customer orders ready for delivery action.{% endif %}
+        </p>
+    </div>
+
+    {% if orders %}
+    <div class="orders-grid">
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-top">
+                <div>
+                    <div class="order-id">Order #{{ order.order_id }}</div>
+                    <small class="text-secondary">{{ order.created_at|date:'M d, Y H:i' }}</small>
+                </div>
+                <span class="status-badge">{{ order.status }}</span>
+            </div>
+
+            <div class="info-label">Customer</div>
+            <div class="info-value">
+                <strong>{{ order.name }}</strong><br>
+                {{ order.email }}<br>
+                {{ order.contact }}
+            </div>
+
+            <div class="info-label">Address</div>
+            <div class="info-value">
+                {{ order.address }}<br>
+                PIN: {{ order.pincode }}
+            </div>
+
+            <div class="info-label">Items</div>
+            <div class="info-value">
+                <ul class="order-items">
+                    {% for item in order.items.all %}
+                    <li>{{ item.product_name }} x {{ item.quantity }}</li>
+                    {% empty %}
+                    <li>No items found</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="order-total">
+                <span class="info-label mb-0">Total</span>
+                <span class="total-value">Rs. {{ order.total_amount }}</span>
+            </div>
+
+            {% if not completed_view %}
+            <form method="POST" action="{% url 'mark_order_delivered' order.order_id %}" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn-delivered" onclick="return confirm('Mark this order as delivered?')">
+                    Item Delivered
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        No orders found.
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

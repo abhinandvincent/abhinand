@@ -1,0 +1,118 @@
+{% extends "customerheader.html" %}
+{% block content %}
+
+<style>
+    .feedback-container {
+        max-width: 760px;
+        margin: 80px auto;
+        padding: 0 20px;
+    }
+
+    .feedback-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 35px;
+    }
+
+    .field-label {
+        color: #71717a;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .feedback-input {
+        background: #111;
+        border: 1px solid #1a1a1a;
+        color: #fff;
+        border-radius: 2px;
+        padding: 15px 18px;
+        width: 100%;
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .feedback-input:focus {
+        border-color: #0070d1;
+        outline: none;
+    }
+
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #333;
+        cursor: pointer;
+        font-size: 2rem;
+        line-height: 1;
+        transition: 0.2s;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: #facc15;
+    }
+
+    .submit-btn {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        border-radius: 2px;
+        padding: 12px 28px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+        background: #005bb1;
+    }
+</style>
+
+<div class="feedback-container">
+    <div class="feedback-card">
+        <h3 class="text-white fw-bold mb-2">Add Feedback</h3>
+        <p class="text-secondary mb-1">Order #{{ order.order_id }} has been delivered.</p>
+        <p class="text-white fw-bold mb-4">{{ order_item.product_name }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label class="field-label">Rating</label>
+            <div class="star-rating">
+                <input type="radio" name="rating" id="star5" value="5" required>
+                <label for="star5">★</label>
+                <input type="radio" name="rating" id="star4" value="4">
+                <label for="star4">★</label>
+                <input type="radio" name="rating" id="star3" value="3">
+                <label for="star3">★</label>
+                <input type="radio" name="rating" id="star2" value="2">
+                <label for="star2">★</label>
+                <input type="radio" name="rating" id="star1" value="1">
+                <label for="star1">★</label>
+            </div>
+
+            <label class="field-label">Your Feedback</label>
+            <textarea name="feedback" class="feedback-input" placeholder="Share your delivery experience..." required></textarea>
+            <div class="mt-4 text-end">
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

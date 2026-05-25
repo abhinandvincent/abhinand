@@ -1,0 +1,385 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+:root {
+    --sony-blue: #0070d1;
+    --dark: #050608;
+    --card: #111318;
+    --line: rgba(255, 255, 255, 0.12);
+    --muted: #aeb4c0;
+}
+
+body {
+    background: var(--dark);
+    color: #fff;
+}
+
+.home-page {
+    overflow: hidden;
+}
+
+.hero-carousel .carousel-item {
+    height: 78vh;
+    min-height: 540px;
+    position: relative;
+    background: #000;
+}
+
+.hero-carousel .carousel-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.28)),
+                linear-gradient(180deg, transparent 70%, var(--dark));
+}
+
+.hero-carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.78) contrast(1.08);
+    transform: scale(1.04);
+    transition: transform 5s ease;
+}
+
+.hero-carousel .active img {
+    transform: scale(1);
+}
+
+.hero-content {
+    position: absolute;
+    z-index: 2;
+    left: clamp(22px, 7vw, 100px);
+    bottom: 18%;
+    max-width: 650px;
+    animation: fadeUp 0.8s ease both;
+}
+
+.hero-label {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: var(--sony-blue);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    margin: 0;
+    font-size: clamp(2.8rem, 6vw, 5.8rem);
+    line-height: 0.95;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.hero-subtitle {
+    max-width: 520px;
+    margin: 18px 0 28px;
+    color: #d9dee7;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.btn-sony {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    padding: 0 23px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: #fff;
+    color: #000;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+}
+
+.btn-sony:hover {
+    background: var(--sony-blue);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.btn-outline-sony {
+    margin-left: 10px;
+    background: transparent;
+    color: #fff;
+    border-color: var(--line);
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 36px;
+    height: 3px;
+    border: 0;
+    border-radius: 999px;
+}
+
+.section {
+    padding: 78px 0;
+}
+
+.section-title {
+    margin-bottom: 34px;
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.feature-box {
+    height: 100%;
+    padding: 26px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    animation: fadeUp 0.8s ease both;
+}
+
+.feature-box:hover {
+    transform: translateY(-7px);
+    border-color: rgba(0, 112, 209, 0.7);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    background: var(--sony-blue);
+    font-size: 1.35rem;
+}
+
+.feature-box h5 {
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.feature-box p,
+.product-card p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.products {
+    background: #080a0d;
+}
+
+.product-card {
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
+}
+
+.product-card img {
+    width: 100%;
+    height: 245px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-body {
+    padding: 22px;
+}
+
+.product-tag {
+    color: var(--sony-blue);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.price {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 575px) {
+    .hero-carousel .carousel-item {
+        height: 72vh;
+        min-height: 560px;
+    }
+
+    .hero-content {
+        left: 20px;
+        right: 20px;
+        bottom: 13%;
+    }
+
+    .btn-outline-sony {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .btn-sony {
+        width: 100%;
+    }
+}
+</style>
+
+<div class="home-page">
+    <div id="heroCarousel" class="carousel slide carousel-fade hero-carousel" data-bs-ride="carousel" data-bs-interval="4800">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Audio"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Camera"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Earbuds"></button>
+        </div>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1800&q=85" alt="Sony headphones">
+                <div class="hero-content">
+                    <span class="hero-label">Premium Audio</span>
+                    <h1 class="hero-title">Hear Every Detail</h1>
+                    <p class="hero-subtitle">Noise cancelling sound, clean design, and comfort made for everyday listening.</p>
+                    <a href="{% url 'login' %}" class="btn-sony">Shop Now <i class="bi bi-arrow-right"></i></a>
+                    <a href="{% url 'login' %}" class="btn-sony btn-outline-sony">View Products</a>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?auto=format&fit=crop&w=1800&q=85" alt="Sony camera">
+                <div class="hero-content">
+                    <span class="hero-label">Alpha Cameras</span>
+                    <h1 class="hero-title">Create With Focus</h1>
+                    <p class="hero-subtitle">Powerful cameras and lenses for sharp photos, smooth video, and creative work.</p>
+                    <a href="{% url 'login' %}" class="btn-sony">Explore Cameras <i class="bi bi-camera"></i></a>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=1800&q=85" alt="Sony earbuds">
+                <div class="hero-content">
+                    <span class="hero-label">Wireless Freedom</span>
+                    <h1 class="hero-title">Small Size. Big Sound.</h1>
+                    <p class="hero-subtitle">Compact earbuds with rich audio, smart noise control, and a comfortable fit.</p>
+                    <a href="{% url 'login' %}" class="btn-sony">Browse Earbuds <i class="bi bi-earbuds"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title text-center">Why Choose Sony</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="bi bi-soundwave"></i></div>
+                        <h5>Clear Sound</h5>
+                        <p>Balanced audio and powerful noise cancelling for a premium listening experience.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="bi bi-camera"></i></div>
+                        <h5>Sharp Imaging</h5>
+                        <p>Camera gear made for creators, photography lovers, and video makers.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <h5>Trusted Quality</h5>
+                        <p>Premium products with dependable performance and a smooth shopping experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section products">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <h2 class="section-title m-0">Top Picks</h2>
+                <a href="{% url 'login' %}" class="btn-sony">View All</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85" alt="Wireless headphones">
+                        <div class="product-body">
+                            <span class="product-tag">Audio</span>
+                            <h5 class="mt-2">WH-1000XM5</h5>
+                            <p>Wireless noise cancelling headphones.</p>
+                            <div class="price">Rs. 29,990</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85" alt="Alpha camera">
+                        <div class="product-body">
+                            <span class="product-tag">Camera</span>
+                            <h5 class="mt-2">Alpha 7 IV</h5>
+                            <p>Full-frame mirrorless camera body.</p>
+                            <div class="price">Rs. 2,42,490</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=900&q=85" alt="Wireless earbuds">
+                        <div class="product-body">
+                            <span class="product-tag">Wireless</span>
+                            <h5 class="mt-2">WF-1000XM5</h5>
+                            <p>Compact earbuds with premium sound.</p>
+                            <div class="price">Rs. 21,990</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

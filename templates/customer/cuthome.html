@@ -1,0 +1,297 @@
+{% extends 'customerheader.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+:root {
+    --bg-main: #000000;
+    --bg-card: #121212;
+    --white: #ffffff;
+    --text-muted: #a1a1aa;
+    --accent-blue: #0070d1;
+}
+
+/* GLOBAL */
+body {
+    background: var(--bg-main);
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+}
+
+/* TITLE */
+.huni-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+/* HERO */
+.slide { display: none; }
+.slide.active {
+    display: flex;
+    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+/* BUTTON */
+.btn-sony {
+    padding: 12px 30px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #3f3f46;
+    background: transparent;
+    color: white;
+}
+
+.btn-sony:hover {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+}
+
+.btn-sony-primary {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.btn-sony-primary:hover {
+    background: #005bb5;
+    color: white;
+}
+
+/* IMAGE EFFECT */
+img {
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+img:hover {
+    transform: scale(1.03);
+}
+
+/* SCROLL ANIMATION */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* CARD STYLE */
+.glass-card {
+    background: var(--bg-card);
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* DOTS */
+.dot {
+    height: 2px;
+    width: 40px;
+    background: #333;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.dot.active-dot {
+    background: var(--accent-blue);
+    width: 60px;
+}
+
+/* SMALL EXTRA ANIMATIONS - remove this block if you want to revert later */
+.slide.active img {
+    animation: gentleFloat 4.5s ease-in-out infinite;
+}
+
+.slide.active .huni-title {
+    animation: titleGlow 2.8s ease-in-out infinite alternate;
+}
+
+.btn-sony:hover {
+    box-shadow: 0 12px 28px rgba(0, 112, 209, 0.22);
+}
+
+.glass-card {
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 112, 209, 0.55);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.dot.active-dot {
+    animation: dotPulse 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.01); }
+}
+
+@keyframes titleGlow {
+    from { text-shadow: 0 0 0 rgba(0, 112, 209, 0); }
+    to { text-shadow: 0 0 24px rgba(0, 112, 209, 0.22); }
+}
+
+@keyframes dotPulse {
+    from { box-shadow: 0 0 0 rgba(0, 112, 209, 0); }
+    to { box-shadow: 0 0 18px rgba(0, 112, 209, 0.6); }
+}
+</style>
+
+<section class="relative h-[90vh] w-full overflow-hidden bg-black">
+
+    <div class="slide active h-full w-full flex flex-col md:flex-row items-center">
+        <div class="w-full md:w-1/2 h-full flex flex-col justify-center px-8 md:px-24 z-10">
+            <span class="text-[10px] text-blue-500 mb-4 uppercase tracking-[0.4em] font-bold">Industry Leading Noise Canceling</span>
+            <h1 class="huni-title text-5xl md:text-8xl mb-6">
+                WH-1000XM5
+            </h1>
+            <p class="text-zinc-400 max-w-md mb-8 text-sm leading-relaxed">
+                Your world, nothing else. Experience the purest sound with two processors controlling eight microphones.
+            </p>
+            <div class="flex gap-4">
+                <a href="{% url 'cutcategory' %}" class="btn-sony btn-sony-primary">Buy Now</a>
+                <a href="{% url 'cutcategory' %}" class="btn-sony">Overview</a>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 h-full flex items-center justify-center p-12">
+            <img src="https://i.pinimg.com/736x/77/6d/a0/776da04304cf9e269a448ca0b6c854b8.jpg" class="object-contain max-h-[70%]">
+        </div>
+    </div>
+
+    <div class="slide h-full w-full flex flex-col md:flex-row items-center">
+        <div class="w-full md:w-1/2 h-full flex flex-col justify-center px-8 md:px-24 z-10">
+            <span class="text-[10px] text-blue-500 mb-4 uppercase tracking-[0.4em] font-bold">Alpha Professional Imaging</span>
+            <h1 class="huni-title text-5xl md:text-8xl mb-6">
+                ALPHA 7 IV
+            </h1>
+            <p class="text-zinc-400 mb-6 max-w-md text-sm leading-relaxed">
+                Beyond Basic. A new standard for full-frame cameras with 33MP high resolution and cinematic 4K video.
+            </p>
+            <a href="{% url 'cutcategory' %}" class="btn-sony w-fit">Explore Series</a>
+        </div>
+        <div class="w-full md:w-1/2 h-full flex items-center justify-center p-12">
+            <img src="https://i.pinimg.com/1200x/a6/83/0e/a6830eb731c0f4fa969d3e38d81f1699.jpg" class="object-contain max-h-[70%]">
+        </div>
+    </div>
+
+    <div class="absolute bottom-12 left-10 md:left-24 flex gap-4">
+        <div class="dot active-dot" onclick="currentSlide(1)"></div>
+        <div class="dot" onclick="currentSlide(2)"></div>
+    </div>
+
+</section>
+
+<section class="max-w-[1400px] mx-auto py-32 px-4">
+
+    <div class="flex flex-col md:flex-row justify-between items-end mb-20 animate-on-scroll">
+        <div>
+            <h2 class="huni-title text-4xl md:text-5xl mb-4">Innovation for Creators</h2>
+            <p class="text-zinc-500 max-w-md text-sm">
+                From cinematic lenses to noise-canceling technology, discover tools designed to inspire.
+            </p>
+        </div>
+        <a href="{% url 'cutcategory' %}" class="mt-6 md:mt-0 text-[10px] uppercase tracking-widest font-bold text-blue-500 hover:text-white transition-colors">
+            View All Collections —
+        </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-16 mb-32 animate-on-scroll">
+        <div class="glass-card">
+            <img src="https://i.pinimg.com/webp70/1200x/d9/12/b3/d912b3f434a1bdd3d7881385962d529d.webp" class="w-full grayscale hover:grayscale-0">
+        </div>
+        <div class="flex flex-col justify-center">
+            <span class="text-blue-500 text-[10px] font-bold tracking-[0.3em] mb-4 uppercase">The Alpha System</span>
+            <h3 class="huni-title text-4xl mb-4">Mirrorless Evolution</h3>
+            <p class="text-zinc-400 mb-8 leading-relaxed">
+                Discover the power of G-Master optics and full-frame sensors that capture detail beyond the human eye.
+            </p>
+            <a href="{% url 'cutcategory' %}" class="btn-sony w-fit">View Lenses & Bodies</a>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-16 animate-on-scroll">
+        <div class="flex flex-col justify-center order-2 md:order-1">
+            <span class="text-blue-500 text-[10px] font-bold tracking-[0.3em] mb-4 uppercase">Personal Audio</span>
+            <h3 class="huni-title text-4xl mb-4">Sound Without Limits</h3>
+            <p class="text-zinc-400 mb-8 leading-relaxed">
+                High-resolution wireless audio that fits your lifestyle. From earbuds to professional studio monitors.
+            </p>
+            <a href="{% url 'cutcategory' %}" class="btn-sony w-fit">Shop Audio</a>
+        </div>
+        <div class="glass-card order-1 md:order-2">
+            <img src="https://i.pinimg.com/1200x/91/e9/d7/91e9d758e5b4446b4ebb15dfd23dcd81.jpg" class="w-full grayscale hover:grayscale-0">
+        </div>
+    </div>
+
+</section>
+
+<script>
+let slideIndex = 1;
+let timer;
+
+showSlides(slideIndex);
+autoSlide();
+
+function currentSlide(n) {
+    clearInterval(timer);
+    showSlides(slideIndex = n);
+    autoSlide();
+}
+
+function showSlides(n) {
+    let slides = document.getElementsByClassName("slide");
+    let dots = document.getElementsByClassName("dot");
+
+    if (n > slides.length) slideIndex = 1;
+    if (n < 1) slideIndex = slides.length;
+
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("active");
+    }
+
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active-dot");
+    }
+
+    slides[slideIndex-1].classList.add("active");
+    dots[slideIndex-1].classList.add("active-dot");
+}
+
+function autoSlide() {
+    timer = setInterval(() => {
+        slideIndex++;
+        showSlides(slideIndex);
+    }, 5000);
+}
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add("is-visible");
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+</script>
+
+{% endblock %}

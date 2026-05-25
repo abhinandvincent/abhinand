@@ -1,0 +1,158 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- AUTHENTICATION TERMINAL STYLING --- */
+    .auth-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-card {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .auth-title {
+        color: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        font-size: 1.75rem;
+        margin-bottom: 5px;
+    }
+
+    .auth-subtitle {
+        color: #71717a;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    /* --- FORM INPUTS --- */
+    .field-label {
+        color: #444;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 14px 18px;
+        border-radius: 2px;
+        font-size: 0.9rem;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-control-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    /* --- BUTTONS --- */
+    .btn-auth {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn-auth:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 112, 209, 0.3);
+    }
+
+    .auth-footer {
+        margin-top: 25px;
+        text-align: center;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 20px;
+    }
+
+    .auth-link {
+        color: #0070d1;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .auth-link:hover {
+        color: #fff;
+    }
+
+    .error-gate {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        padding: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+</style>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h4 class="auth-title">Login</h4>
+            <span class="auth-subtitle">Authorized Access Only</span>
+        </div>
+        {% if error %}
+        <div class="error-gate">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+        </div>
+        {% endif %}
+        <form method="POST" action="{% url 'user_login' %}">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="field-label">Username</label>
+                <input type="text" name="username" class="form-control-custom w-100" placeholder="ENTER UID" autocomplete="off" required>
+            </div>
+            <div class="mb-4">
+                <label class="field-label">Password</label>
+                <input type="password" name="password" class="form-control-custom w-100" placeholder="••••••••" autocomplete="off" required>
+            </div>
+            <button type="submit" class="btn-auth w-100">
+                Initialize Login
+            </button>         
+            <div class="auth-footer">
+                <small class="text-secondary text-uppercase" style="font-size: 0.6rem; letter-spacing: 1px;">
+                    New User? 
+                    <a href="{% url 'customer_register' %}" class="auth-link ms-1">Register Now</a>
+                </small>
+            </div>
+        </form>
+    </div> 
+</div> 
+{% endblock %}

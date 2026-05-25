@@ -1,0 +1,269 @@
+{% extends 'deliveryboy/boyheader.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .dashboard-card {
+        background: #111;
+        border: 1px solid #1a1a1a;
+        border-radius: 6px;
+        padding: 30px;
+        transition: 0.3s;
+        height: 100%;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-4px);
+        border-color: #0070d1;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(0,112,209,0.1);
+        border: 1px solid rgba(0,112,209,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+
+    .card-icon i {
+        color: #0070d1;
+        font-size: 1.5rem;
+    }
+
+    .card-title {
+        color: #71717a;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .card-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .card-desc {
+        color: #555;
+        font-size: 0.85rem;
+    }
+
+    .welcome-banner {
+        background: linear-gradient(135deg, #0070d1, #004a8f);
+        padding: 45px;
+        border-radius: 8px;
+        margin-bottom: 35px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 50%;
+        top: -80px;
+        right: -50px;
+    }
+
+    .quick-btn {
+        background: #111;
+        border: 1px solid #1a1a1a;
+        color: #fff;
+        padding: 15px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+        margin-bottom: 15px;
+    }
+
+    .quick-btn:hover {
+        border-color: #0070d1;
+        background: rgba(0,112,209,0.08);
+        color: #fff;
+    }
+
+    .quick-btn i {
+        margin-right: 12px;
+        color: #0070d1;
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #71717a;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+</style>
+
+<!-- WELCOME -->
+<div class="welcome-banner">
+
+    <h2 class="fw-bold text-white mb-2">
+        Welcome Back{% if delivery_boy %}, {{ delivery_boy.name }}{% else %}, Delivery Staff{% endif %}
+    </h2>
+
+    <p class="text-light mb-0">
+        Monitor assigned orders, completed deliveries, and live logistics updates.
+    </p>
+
+</div>
+
+<!-- STATS -->
+<div class="row g-4 mb-5">
+
+    <div class="col-lg-4 col-md-6">
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="card-title">
+                Assigned Orders
+            </div>
+
+            <div class="card-value">
+                {{ assigned_orders }}
+            </div>
+
+            <div class="card-desc">
+                Orders currently assigned for delivery.
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+
+            <div class="card-title">
+                Completed Deliveries
+            </div>
+
+            <div class="card-value">
+                {{ completed_deliveries }}
+            </div>
+
+            <div class="card-desc">
+                Successfully delivered orders this month.
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                <i class="bi bi-geo-alt"></i>
+            </div>
+
+            <div class="card-title">
+                Active Locations
+            </div>
+
+            <div class="card-value">
+                {{ active_locations }}
+            </div>
+
+            <div class="card-desc">
+                Delivery destinations currently active.
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="section-title">
+            Quick Actions
+        </div>
+
+        <a href="{% url 'delivery_orders' %}" class="quick-btn">
+            <i class="bi bi-box-seam"></i>
+            View Assigned Orders
+        </a>
+
+        <a href="{% url 'delivery_completed' %}" class="quick-btn">
+            <i class="bi bi-check-circle"></i>
+            Completed Deliveries
+        </a>
+
+        <a href="{% url 'delivery_locations' %}" class="quick-btn">
+            <i class="bi bi-map"></i>
+            Delivery Locations
+        </a>
+
+        <a href="{% url 'delivery_profile' %}" class="quick-btn">
+            <i class="bi bi-person-circle"></i>
+            My Profile
+        </a>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="dashboard-card h-100">
+
+            <div class="section-title mb-4">
+                Delivery Status
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold text-white mb-1">
+                        System Status
+                    </h5>
+
+                    <small class="text-secondary">
+                        Logistics network operating normally
+                    </small>
+                </div>
+
+                <span class="badge bg-success px-3 py-2">
+                    ONLINE
+                </span>
+            </div>
+
+            <div class="progress" style="height: 8px; background: #1a1a1a;">
+                <div class="progress-bar"
+                     style="width: {{ daily_completion }}%; background: #0070d1;">
+                </div>
+            </div>
+
+            <small class="text-secondary d-block mt-3">
+                Today completed: {{ today_delivered }} of {{ today_total }} orders ({{ daily_completion }}%)
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

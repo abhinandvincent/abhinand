@@ -1,0 +1,134 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- WARNING TERMINAL STYLING --- */
+    .danger-zone {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .warning-card {
+        background: #0a0a0a;
+        border: 1px solid #2d1010; /* Subtle deep red border */
+        border-radius: 4px;
+        padding: 50px;
+        width: 100%;
+        max-width: 550px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(239, 68, 68, 0.05);
+    }
+
+    .warning-icon {
+        font-size: 3.5rem;
+        color: #ef4444;
+        margin-bottom: 25px;
+        filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.2));
+    }
+
+    .warning-title {
+        color: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .warning-text {
+        color: #71717a;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 35px;
+    }
+
+    .asset-highlight {
+        color: #ef4444;
+        font-weight: 800;
+        background: rgba(239, 68, 68, 0.1);
+        padding: 2px 8px;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* --- ACTION BUTTONS --- */
+    .btn-confirm-delete {
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 14px 30px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.75rem;
+        border-radius: 2px;
+        transition: 0.3s;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .btn-confirm-delete:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-cancel-alt {
+        background: transparent;
+        color: #444;
+        border: 1px solid #1a1a1a;
+        padding: 12px 30px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.7rem;
+        border-radius: 2px;
+        text-decoration: none;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .btn-cancel-alt:hover {
+        border-color: #333;
+        color: #71717a;
+    }
+</style>
+
+<div class="danger-zone">
+    <div class="warning-card">
+        <div class="warning-icon">
+            <i class="bi bi-exclamation-octagon"></i>
+        </div>
+        
+        <h2 class="warning-title">Confirm Deletion</h2>
+        
+        <p class="warning-text">
+            You are about to permanently purge the asset record for <br>
+            <span class="asset-highlight">{{ product.name }}</span>. <br>
+            This action cannot be rolled back by the system.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <button type="submit" class="btn-confirm-delete">
+                Purge Record
+            </button>
+            
+            <a href="{% url 'product_list' %}" class="btn-cancel-alt">
+                Abort Protocol
+            </a>
+        </form>
+
+        <div class="mt-4">
+            <span class="text-secondary small" style="font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.5;">
+                Authorized User Override Required
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}

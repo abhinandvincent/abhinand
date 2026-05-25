@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONY | Command Center</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --sidebar-bg: #000000;
+            --accent: #0070d1; /* Premium Sony-style Blue */
+            --bg-main: #0a0a0a;
+            --border-ui: #1a1a1a;
+            --text-gray: #71717a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-main);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* --- MODERN SIDEBAR --- */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            padding: 40px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border-right: 1px solid var(--border-ui);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 999px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        .sidebar .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            padding: 0 15px 28px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            padding: 12px 15px 8px;
+            font-weight: 800;
+        }
+
+        .sidebar a {
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 4px;
+            margin-bottom: 3px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar a.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 112, 209, 0.2);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Header Area */
+        .admin-header {
+            background: #000;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-ui);
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 50px 40px;
+        }
+
+        /* --- FOOTER --- */
+        .admin-footer {
+            background: #000;
+            padding: 25px 40px;
+            border-top: 1px solid var(--border-ui);
+            color: #333;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* MOBILE OVERRIDES */
+        @media (max-width: 992px) {
+            .sidebar { left: -280px; }
+            .sidebar.active { left: 0; }
+            .main-content { margin-left: 0; width: 100%; }
+            .toggle-btn { display: flex !important; }
+        }
+
+        .toggle-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1100;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            border: none;
+            border-radius: 4px;
+        }
+
+        .header-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            background: transparent;
+            border: 1px solid var(--border-ui);
+            border-radius: 4px;
+            padding: 9px 14px;
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .header-logout:hover {
+            color: #fff;
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+
+<button class="toggle-btn" onclick="toggleSidebar()">
+    <i class="bi bi-list text-white fs-4"></i>
+</button>
+
+<div class="sidebar" id="sidebar">
+    <div class="brand">SONY<span style="color: var(--accent);"></span></div>
+
+    <div class="nav-label">Core Metrics</div>
+    <a href="{% url 'adminindex' %}" class="active">
+        <i class="bi bi-grid-1x2-fill"></i> System Overview
+    </a>
+    
+    <div class="nav-label">Fleet Management</div>
+    <a href="{% url 'product_list' %}">
+        <i class="bi bi-cpu"></i> View Inventory
+    </a>
+    <a href="{% url 'addproduct' %}">
+        <i class="bi bi-plus-circle"></i> Add Component
+    </a>
+    <a href="{% url 'deliveryboy' %}">
+        <i class="bi bi-plus-circle"></i> Add Delivery Boy
+    </a>
+    <a href="{% url 'order_list' %}">
+        <i class="bi bi-receipt"></i> Order History
+    </a>
+    <a href="{% url 'order_product_chart' %}">
+        <i class="bi bi-pie-chart"></i> Product Chart
+    </a>
+    <a href="{% url 'catlist' %}">
+        <i class="bi bi-tags"></i> Category List
+    </a>
+
+    <div class="nav-label">Infrastructure</div>
+    <a href="{% url 'category' %}">
+        <i class="bi bi-layers"></i> Register Categories
+    </a>
+    <a href="{% url 'add_district' %}">
+        <i class="bi bi-geo-alt"></i> Register Regions
+    </a>
+    <a href="{% url 'add_location' %}">
+        <i class="bi bi-map"></i> Register locations
+    </a>
+    <a href="{% url 'location_list' %}">
+        <i class="bi bi-map"></i> Location List
+    </a>
+</div>  
+<div class="main-content">
+    <div class="admin-header">
+        <h6 class="text-uppercase fw-bold mb-0" style="letter-spacing: 2px; color: #fff;">
+            Control Panel <span class="text-secondary">/</span> <span style="color: var(--accent);">Live</span>
+        </h6>
+        <div class="d-flex align-items-center">
+            <div class="text-end me-3">
+                <div class="small fw-bold text-white">System Admin</div>
+            </div>
+            <a href="{% url 'logout' %}" class="header-logout me-3">
+                <i class="bi bi-power"></i> Log Out
+            </a>
+            <img src="https://i.pinimg.com/736x/87/22/ec/8722ec261ddc86a44e7feb3b46836c10.jpg" class="rounded-1" width="38" alt="Profile">
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="admin-footer d-flex justify-content-between">
+        <span>Sony Automotive Systems &copy; 2026</span>
+        <div class="links">
+            <span class="me-3">System Status: <span class="text-success">Optimal</span></span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

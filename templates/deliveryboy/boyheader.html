@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONY | Delivery Panel</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --sidebar-bg: #000000;
+            --accent: #0070d1;
+            --bg-main: #0a0a0a;
+            --border-ui: #1a1a1a;
+            --text-gray: #71717a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-main);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            padding: 40px 20px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border-right: 1px solid var(--border-ui);
+        }
+
+        .sidebar .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            padding: 0 15px 40px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            padding: 15px 15px 8px;
+            font-weight: 800;
+        }
+
+        .sidebar a {
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            transition: 0.3s;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar a.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 112, 209, 0.2);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .delivery-header {
+            background: #000;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-ui);
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 50px 40px;
+        }
+
+        /* FOOTER */
+        .delivery-footer {
+            background: #000;
+            padding: 25px 40px;
+            border-top: 1px solid var(--border-ui);
+            color: #333;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -280px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .toggle-btn {
+                display: flex !important;
+            }
+        }
+
+        .toggle-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1100;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+<button class="toggle-btn" onclick="toggleSidebar()">
+    <i class="bi bi-list text-white fs-4"></i>
+</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="brand">
+        SONY
+    </div>
+
+    <div class="nav-label">Delivery Operations</div>
+
+    <a href="{% url 'delivery_dashboard' %}" class="active">
+        <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+
+    <a href="{% url 'delivery_orders' %}">
+        <i class="bi bi-box-seam"></i> Assigned Orders
+    </a>
+
+    <a href="{% url 'delivery_completed' %}">
+        <i class="bi bi-check2-circle"></i> Completed Deliveries
+    </a>
+
+    <a href="{% url 'delivery_profile' %}">
+        <i class="bi bi-person-circle"></i> My Profile
+    </a>
+
+    <div class="nav-label">Tracking</div>
+
+    <a href="{% url 'delivery_locations' %}">
+        <i class="bi bi-geo-alt"></i> Delivery Locations
+    </a>
+
+    <a href="{% url 'delivery_history' %}">
+        <i class="bi bi-clock-history"></i> Delivery History
+    </a>
+
+    <div class="nav-label">System</div>
+
+    <a href="{% url 'login' %}"
+       style="margin-top: 40px; border-top: 1px solid #1a1a1a; padding-top: 20px;">
+
+        <i class="bi bi-power"></i> Log Out
+    </a>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <!-- HEADER -->
+    <div class="delivery-header">
+
+        <h6 class="text-uppercase fw-bold mb-0"
+            style="letter-spacing: 2px; color: #fff;">
+
+            Delivery Panel
+            <span class="text-secondary">/</span>
+
+            <span style="color: var(--accent);">
+                Active
+            </span>
+        </h6>
+
+        <div class="d-flex align-items-center">
+
+            <div class="text-end me-3">
+                <div class="small fw-bold text-white">
+                    Delivery Staff
+                </div>
+            </div>
+
+            <img src="https://i.pinimg.com/736x/87/22/ec/8722ec261ddc86a44e7feb3b46836c10.jpg"
+                 class="rounded-1"
+                 width="38"
+                 alt="Profile">
+
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-wrapper">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="delivery-footer d-flex justify-content-between">
+
+        <span>
+            Sony Logistics Network &copy; 2026
+        </span>
+
+        <div class="links">
+            <span class="me-3">
+                Delivery Status:
+                <span class="text-success">Online</span>
+            </span>
+        </div>
+
+    </footer>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+{% extends 'customerheader.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    :root {
+        --sony-blue: #0070d1;
+        --dark-card: #0a0a0a;
+        --border-color: #1a1a1a;
+    }
+
+    body {
+        background: #000000;
+        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+    }
+
+    /* CARD OVERHAUL */
+    .profile-card {
+        max-width: 800px;
+        margin: 80px auto;
+        background: var(--dark-card);
+        border-radius: 4px;
+        padding: 60px;
+        border: 1px solid var(--border-color);
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TITLE STYLE */
+    .profile-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 40px;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        border-left: 4px solid var(--sony-blue);
+        padding-left: 20px;
+    }
+
+    /* HEADER ICON */
+    .profile-header {
+        margin-bottom: 25px;
+        color: var(--sony-blue);
+    }
+
+    .profile-header i {
+        font-size: 50px;
+    }
+
+    /* INFO GRID */
+    .profile-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* Full width for address */
+    .info-item.address-item {
+        grid-column: span 2;
+    }
+
+    /* ITEM STYLING */
+    .info-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #111;
+        border-radius: 2px;
+        border: 1px solid var(--border-color);
+        transition: 0.3s ease;
+    }
+
+    .info-item:hover {
+        border-color: var(--sony-blue);
+        background: #151515;
+    }
+
+    /* ICON */
+    .info-icon {
+        font-size: 18px;
+        margin-right: 20px;
+        color: var(--sony-blue);
+        width: 25px;
+        text-align: center;
+    }
+
+    /* TEXT */
+    .label {
+        font-size: 0.7rem;
+        color: #71717a;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 4px;
+    }
+
+    .value {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #fff;
+    }
+
+    /* BUTTON */
+    .profile-btn {
+        margin-top: 40px;
+        display: inline-block;
+        width: 100%;
+        padding: 16px;
+        background: transparent;
+        color: white;
+        border: 1px solid #fff;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: none;
+        transition: 0.4s;
+    }
+
+    .profile-btn:hover {
+        background: white;
+        color: black;
+    }
+
+    @media (max-width: 768px) {
+        .profile-info {
+            grid-template-columns: 1fr;
+        }
+        .info-item.address-item {
+            grid-column: span 1;
+        }
+        .profile-card {
+            padding: 30px;
+            margin: 40px 15px;
+        }
+    }
+</style>
+
+<div class="container">
+
+    <div class="profile-card">
+
+        <div class="profile-header">
+            <i class="bi bi-person-badge"></i>
+        </div>
+
+        <h3 class="profile-title">Account Settings</h3>
+
+        <div class="profile-info">
+
+            <div class="info-item">
+                <i class="bi bi-person info-icon"></i>
+                <div>
+                    <div class="label">Full Name</div>
+                    <div class="value">{{ customer.Customer_name }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-envelope info-icon"></i>
+                <div>
+                    <div class="label">Identity</div>
+                    <div class="value">{{ customer.Email }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-phone info-icon"></i>
+                <div>
+                    <div class="label">Contact</div>
+                    <div class="value">{{ customer.Contact }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-geo info-icon"></i>
+                <div>
+                    <div class="label">District</div>
+                    <div class="value">{{ customer.District_id.name }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-geo-alt info-icon"></i>
+                <div>
+                    <div class="label">Location</div>
+                    <div class="value">{{ customer.Location_id.name }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-pin-map info-icon"></i>
+                <div>
+                    <div class="label">Pincode</div>
+                    <div class="value">{{ customer.pincode }}</div>
+                </div>
+            </div>
+
+            <div class="info-item address-item">
+                <i class="bi bi-house-door info-icon"></i>
+                <div>
+                    <div class="label">Primary Address</div>
+                    <div class="value">{{ customer.address }}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

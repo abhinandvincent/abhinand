@@ -1,0 +1,338 @@
+{% extends 'deliveryboy/boyheader.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .profile-shell {
+        max-width: 920px;
+    }
+
+    .page-kicker {
+        color: #71717a;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .page-title {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 28px;
+        text-transform: uppercase;
+    }
+
+    .profile-panel {
+        background: #0f0f0f;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .profile-top {
+        align-items: center;
+        background: #050505;
+        border-bottom: 1px solid #1a1a1a;
+        display: flex;
+        gap: 22px;
+        padding: 30px;
+        position: relative;
+    }
+
+    .profile-avatar {
+        align-items: center;
+        border-radius: 50%;
+        color: #fff;
+        display: flex;
+        flex: 0 0 96px;
+        font-size: 2rem;
+        height: 96px;
+        justify-content: center;
+        position: relative;
+        width: 96px;
+    }
+
+    .profile-avatar .avatar-image {
+        align-items: center;
+        background: #0070d1;
+        border-radius: 50%;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+    }
+
+    .profile-avatar img {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .profile-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .avatar-upload {
+        align-items: center;
+        background: #0070d1;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        color: #fff;
+        display: flex;
+        height: 34px;
+        justify-content: center;
+        position: absolute;
+        right: -10px;
+        bottom: -10px;
+        width: 34px;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+        z-index: 2;
+    }
+
+    .avatar-upload i {
+        font-size: 1rem;
+    }
+
+    .photo-input {
+        display: none;
+    }
+
+    .photo-submit {
+        background: #0070d1;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        padding: 0 18px;
+        text-transform: uppercase;
+    }
+
+    .profile-meta {
+        color: #71717a;
+        margin: 0;
+    }
+
+    .status-pill {
+        border: 1px solid rgba(34, 197, 94, 0.35);
+        color: #22c55e;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-left: auto;
+        padding: 8px 12px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .profile-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 30px;
+    }
+
+    .info-item {
+        align-items: flex-start;
+        background: #111;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        display: flex;
+        gap: 16px;
+        min-width: 0;
+        padding: 20px;
+    }
+
+    .info-item.full {
+        grid-column: 1 / -1;
+    }
+
+    .info-item i {
+        color: #0070d1;
+        flex: 0 0 22px;
+        font-size: 1.1rem;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .info-label {
+        color: #71717a;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .info-value {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .photo-form {
+        border-top: 1px solid #1a1a1a;
+        display: flex;
+        gap: 14px;
+        padding: 24px 30px 30px;
+    }
+
+    .photo-input {
+        background: #111;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        color: #e5e7eb;
+        flex: 1;
+        min-width: 0;
+        padding: 10px;
+    }
+
+    .photo-input::file-selector-button {
+        background: #0070d1;
+        border: 0;
+        border-radius: 3px;
+        color: #fff;
+        font-weight: 800;
+        margin-right: 12px;
+        padding: 9px 12px;
+        text-transform: uppercase;
+    }
+
+
+    @media (max-width: 768px) {
+        .profile-top {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .status-pill {
+            margin-left: 0;
+        }
+
+        .profile-grid {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+
+        .photo-form {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .photo-submit {
+            padding: 13px 18px;
+        }
+    }
+</style>
+
+<div class="profile-shell">
+    <div class="page-kicker">Delivery Staff</div>
+    <h2 class="page-title">My Profile</h2>
+
+        <div class="profile-panel">
+        <div class="profile-top">
+            <div class="profile-avatar">
+                <div class="avatar-image">
+                    {% if delivery_boy.profile_picture %}
+                    <img src="{{ delivery_boy.profile_picture.url }}" alt="{{ delivery_boy.name }}">
+                    {% else %}
+                    <i class="bi bi-person-badge"></i>
+                    {% endif %}
+                </div>
+                <label for="profilePictureInput" class="avatar-upload" title="Upload profile picture">
+                    <i class="bi bi-plus-lg"></i>
+                </label>
+            </div>
+
+            <div class="profile-info">
+                <h3 class="profile-name">{{ delivery_boy.name }}</h3>
+                <p class="profile-meta">{{ delivery_boy.role }} / ID {{ delivery_boy.deliveryboy_id }}</p>
+            </div>
+
+            <div class="status-pill">{{ delivery_boy.status }}</div>
+        </div>
+
+        <div class="profile-grid">
+            <div class="info-item">
+                <i class="bi bi-person"></i>
+                <div>
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value">{{ delivery_boy.name }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-at"></i>
+                <div>
+                    <div class="info-label">Username</div>
+                    <div class="info-value">{{ delivery_boy.username }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-envelope"></i>
+                <div>
+                    <div class="info-label">Email</div>
+                    <div class="info-value">{{ delivery_boy.email }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-phone"></i>
+                <div>
+                    <div class="info-label">Contact</div>
+                    <div class="info-value">{{ delivery_boy.contact }}</div>
+                </div>
+            </div>
+
+            <div class="info-item full">
+                <i class="bi bi-geo-alt"></i>
+                <div>
+                    <div class="info-label">Address</div>
+                    <div class="info-value">{{ delivery_boy.address }}</div>
+                </div>
+            </div>
+        </div>
+
+        <form id="photoForm" method="POST" enctype="multipart/form-data" class="photo-form">
+            {% csrf_token %}
+            <input id="profilePictureInput" type="file" name="profile_picture" class="photo-input" accept="image/*" onchange="previewAndSubmit(event)">
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewAndSubmit(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+        const avatarImage = document.querySelector('.profile-avatar .avatar-image');
+        if (!avatarImage) return;
+
+        avatarImage.innerHTML = '';
+        const img = document.createElement('img');
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.src = url;
+        img.alt = '{{ delivery_boy.name|escapejs }}';
+        avatarImage.appendChild(img);
+
+        // Submit after a short delay to allow the user to see the preview inside the circle
+        setTimeout(() => {
+            document.getElementById('photoForm').submit();
+        }, 300);
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Premium Sony Tech Aesthetics */
+    .section-title {
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .sony-card {
+        border-radius: 4px;
+        overflow: hidden;
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border 0.3s ease;
+        border: 1px solid #1a1a1a;
+        background: #000;
+    }
+
+    .sony-card:hover {
+        transform: translateY(-10px);
+        border-color: #0070d1; /* Sony Blue Accent */
+    }
+
+    .img-container {
+        position: relative;
+        overflow: hidden;
+        height: 320px;
+    }
+
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .sony-card:hover .product-img {
+        transform: scale(1.08);
+    }
+
+    /* Glassmorphism Overlay */
+    .product-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 25px;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+        backdrop-filter: blur(2px);
+    }
+
+    .badge-category {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #0070d1;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .btn-buy {
+        background: #ffffff;
+        color: #000;
+        border-radius: 2px;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 12px;
+        transition: 0.3s;
+        border: none;
+    }
+
+    .btn-buy:hover {
+        background: #0070d1;
+        color: #fff;
+    }
+
+    .price-tag {
+        font-size: 1.25rem;
+        font-weight: 300;
+        color: #fff;
+    }
+</style>
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h3 class="section-title">Authorized Showroom</h3>
+        <p class="text-muted small tracking-widest uppercase">Experience the future of sound and vision</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?auto=format&fit=crop&w=800&q=80" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Over-Ear Audio</span>
+                        <h5 class="card-title text-white">WH-1000XM5 Black</h5>
+                        <p class="small text-secondary mb-3">Industry-leading noise cancellation.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹29,990</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Imaging</span>
+                        <h5 class="card-title text-white">Alpha 7 IV Body</h5>
+                        <p class="small text-secondary mb-3">33MP Full-frame Hybrid Excellence.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹2,42,490</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Truly Wireless</span>
+                        <h5 class="card-title text-white">WF-1000XM5 Buds</h5>
+                        <p class="small text-secondary mb-3">The best noise canceling earbuds.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹21,990</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Home Theatre</span>
+                        <h5 class="card-title text-white">Bravia XR A80L</h5>
+                        <p class="small text-secondary mb-3">Cognitive Processor XR OLED.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹1,64,900</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://i.pinimg.com/736x/2f/7f/c9/2f7fc9399628a298c39fa2a78318f8e9.jpg" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Optics</span>
+                        <h5 class="card-title text-white">FE 24-70mm GM II</h5>
+                        <p class="small text-secondary mb-3">The ultimate constant F2.8 zoom.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹1,99,990</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sony-card shadow-lg">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?auto=format&fit=crop&w=800&q=80" class="product-img">
+                    <div class="product-overlay">
+                        <span class="badge-category">Vlog Series</span>
+                        <h5 class="card-title text-white">Sony ZV-E10 II</h5>
+                        <p class="small text-secondary mb-3">Interchangeable lens vlog camera.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price-tag">₹74,990</span>
+                            <a href="{% url 'login' %}" class="btn-buy px-4">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

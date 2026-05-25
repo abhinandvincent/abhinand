@@ -1,0 +1,248 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- STUDIO ECOSYSTEM THEME --- */
+    body {
+        background: #030303;
+        color: #f4f4f5;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Ambient Lens Flare Effect */
+    .lens-flare {
+        position: fixed;
+        top: -10%;
+        left: -5%;
+        width: 40vw;
+        height: 40vw;
+        background: radial-gradient(circle, rgba(0, 112, 209, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Header Section */
+    .studio-header {
+        padding: 100px 0 70px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .tech-spec-label {
+        color: #0070d1;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .studio-title {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        margin-bottom: 20px;
+    }
+
+    /* Studio Service Cards */
+    .service-card {
+        background: rgba(15, 15, 15, 0.8);
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        padding: 40px;
+        height: 100%;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card:hover {
+        background: #0a0a0a;
+        border-color: #0070d1;
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Icon Styling */
+    .service-icon {
+        font-size: 2rem;
+        color: #0070d1;
+        margin-bottom: 25px;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .service-card:hover .service-icon {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(0, 112, 209, 0.5));
+    }
+
+    .service-name {
+        font-weight: 800;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        margin-bottom: 15px;
+    }
+
+    .service-summary {
+        color: #71717a;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    /* Capability Tags */
+    .capability-tag {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 2px;
+        margin-right: 5px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #444;
+        transition: 0.3s;
+    }
+
+    .service-card:hover .capability-tag {
+        border-color: #333;
+        color: #888;
+    }
+
+    /* Action Button */
+    .service-btn {
+        margin-top: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.3s;
+    }
+
+    .service-btn i {
+        font-size: 0.8rem;
+        transition: 0.3s;
+    }
+
+    .service-btn:hover {
+        color: #0070d1;
+    }
+
+    .service-btn:hover i {
+        transform: translateX(5px);
+    }
+</style>
+
+<div class="lens-flare"></div>
+
+<div class="container pb-5">
+    
+    <div class="studio-header">
+        <span class="tech-spec-label">Professional Solutions</span>
+        <h1 class="studio-title">Capture & <span style="color: #0070d1;">Acoustics</span></h1>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-camera"></i></div>
+                <h4 class="service-name">Optical Service</h4>
+                <p class="service-summary">Precision sensor cleaning and lens calibration for peak visual fidelity and focus accuracy.</p>
+                <div>
+                    <span class="capability-tag">Sensor Clean</span>
+                    <span class="capability-tag">AF Calibration</span>
+                    <span class="capability-tag">Firmware</span>
+                </div>
+                <a href="#" class="service-btn">Request Audit <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-headphones"></i></div>
+                <h4 class="service-name">Acoustic Tuning</h4>
+                <p class="service-summary">Custom driver matching and frequency response analysis for high-fidelity audio equipment.</p>
+                <div>
+                    <span class="capability-tag">Frequency EQ</span>
+                    <span class="capability-tag">Driver Mod</span>
+                    <span class="capability-tag">Burn-in</span>
+                </div>
+                <a href="#" class="service-btn">View Specs <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-box-seam"></i></div>
+                <h4 class="service-name">Studio Rental</h4>
+                <p class="service-summary">Access a curated fleet of premium glass and studio monitors for your next creative production.</p>
+                <div>
+                    <span class="capability-tag">Daily Rental</span>
+                    <span class="capability-tag">Elite Gear</span>
+                    <span class="capability-tag">Insured</span>
+                </div>
+                <a href="#" class="service-btn">Check Availability <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-palette"></i></div>
+                <h4 class="service-name">Color Grading</h4>
+                <p class="service-summary">Digital workflow management and cinematic color science application for raw visual assets.</p>
+                <div>
+                    <span class="capability-tag">LOG Profiles</span>
+                    <span class="capability-tag">LUT Design</span>
+                    <span class="capability-tag">HDR</span>
+                </div>
+                <a href="#" class="service-btn">Enter Lab <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-mic"></i></div>
+                <h4 class="service-name">Sound Mastering</h4>
+                <p class="service-summary">Professional mastering services to ensure your audio output meets industrial broadcasting standards.</p>
+                <div>
+                    <span class="capability-tag">Noise Floor</span>
+                    <span class="capability-tag">LUFS Audit</span>
+                    <span class="capability-tag">Spatial</span>
+                </div>
+                <a href="#" class="service-btn">Analyze File <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="service-card">
+                <div class="service-icon"><i class="bi bi-pc-display"></i></div>
+                <h4 class="service-name">Workflow Ops</h4>
+                <p class="service-summary">Comprehensive digital asset management and hardware troubleshooting for studio ecosystems.</p>
+                <div>
+                    <span class="capability-tag">Cloud Sync</span>
+                    <span class="capability-tag">Storage</span>
+                    <span class="capability-tag">Diagnostics</span>
+                </div>
+                <a href="#" class="service-btn">Support Link <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

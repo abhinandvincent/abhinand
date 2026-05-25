@@ -1,0 +1,167 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .admin-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        overflow: hidden;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header-accent {
+        background: #000;
+        border-bottom: 1px solid #1a1a1a;
+        padding: 30px 40px;
+    }
+
+    .form-control-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 15px 20px;
+        border-radius: 2px;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-control-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    select.form-control-custom {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2371717a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1.25rem center;
+        background-size: 16px 12px;
+    }
+
+    .form-control-custom::placeholder {
+        color: #333;
+    }
+
+    .field-label {
+        color: #71717a;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .btn-submit {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 12px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: #444;
+        border: 1px solid #1a1a1a;
+        padding: 12px 25px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        margin-right: 10px;
+    }
+
+    .btn-reset:hover {
+        border-color: #333;
+        color: #71717a;
+    }
+</style>
+
+<div class="admin-card mt-5">
+    <div class="card-header-accent">
+        <h4 class="fw-800 mb-1 text-white text-uppercase" style="letter-spacing: -1px;">Select District</h4>
+        <p class="text-secondary small mb-0">Choose a regional district to view or manage associated locations.</p>
+    </div>
+
+    <div class="card-body p-5">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="field-label">District</label>
+                    <select id="districtid" name="district" class="form-control-custom w-100" required>
+                        <option value="" disabled selected>-- Select District --</option>
+                        {% for d in districts %}
+                            <option value="{{ d.id }}" style="background: #0a0a0a;">{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <table class="table mt-4">
+                        <thead>
+                            <tr>
+                                <th>SI No</th>
+                                <th>Location Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="locations">
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'jquery-3.7.1.min.js' %}"> </script> 
+<script>
+  $(document).ready(function() {
+    //  alert('haii');
+   $.ajaxSetup({
+      headers: { "X-CSRFToken": '{{csrf_token}}' }
+    });
+    $('#districtid').change(function () {
+      var districtid = $(this).val();
+        //alert(district);
+      $.ajax({
+        type: "POST",
+        url: '{% url "filllocation" %}',
+        data: { did: districtid },
+        dataType: "json",
+        success: function (data) {
+          $('#locations').empty();
+            //alert("test");
+            s = 1;
+            $.each(data, function (key, val) {
+            var id=val.locationid;
+            var deleteurl='#'.replace('0', id);
+            var row = '<tr> <td>' + s++ + '</td>' + 
+                            '<td>' + val.locationname + '</td>'+
+                            '<td class="text-danger"><a href=" ' + deleteurl +'">Delete</a></td>'+
+                      '</tr>';
+            $('#locations').append(row);
+        });
+        }
+      });
+    });
+  });
+  </script>
+{% endblock %}

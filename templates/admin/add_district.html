@@ -1,0 +1,118 @@
+{% extends 'admin/adminheader.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .admin-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .card-header-accent {
+        background: #000;
+        border-bottom: 1px solid #1a1a1a;
+        padding: 30px 40px;
+    }
+
+    .form-control-custom {
+        background: #111 !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 15px 20px;
+        border-radius: 2px;
+        transition: 0.4s;
+    }
+
+    .form-control-custom:focus {
+        border-color: #0070d1 !important;
+        box-shadow: 0 0 15px rgba(0, 112, 209, 0.1) !important;
+        outline: none;
+    }
+
+    .form-control-custom::placeholder {
+        color: #333;
+    }
+
+    .field-label {
+        color: #71717a;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .btn-submit {
+        background: #0070d1;
+        color: #fff;
+        border: none;
+        padding: 12px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #005bb1;
+        transform: translateY(-2px);
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: #444;
+        border: 1px solid #1a1a1a;
+        padding: 12px 25px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+        margin-right: 10px;
+    }
+
+    .btn-reset:hover {
+        border-color: #333;
+        color: #71717a;
+    }
+</style>
+
+<div class="admin-card">
+    <div class="card-header-accent">
+        <h4 class="fw-800 mb-1 text-white text-uppercase" style="letter-spacing: -1px;">Register District</h4>
+        <p class="text-secondary small mb-0">Define a new operational region for the distribution network.</p>
+    </div>
+
+    <div class="card-body p-5">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label class="field-label">Region Identifier / District Name</label>
+                    <input type="text" name="district_name" class="form-control-custom w-100" placeholder="ENTER DISTRICT NAME..." required>
+                </div>
+
+                <div class="col-12 mt-5 pt-4 d-flex justify-content-between align-items-center" style="border-top: 1px solid #1a1a1a;">
+                    <div class="d-flex align-items-center text-secondary" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">
+                        <i class="bi bi-shield-lock me-2 text-primary"></i> 
+                        Validated System Entry
+                    </div>
+                    
+                    <div class="buttons">
+                        <button type="reset" class="btn-reset">Discard</button>
+                        <button type="submit" class="btn-submit">
+                            Confirm Entry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

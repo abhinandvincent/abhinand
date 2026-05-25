@@ -1,0 +1,288 @@
+{% extends "customerheader.html" %}
+{% block content %}
+
+<style>
+    body {
+        background: #000000;
+        font-family: 'Inter', sans-serif;
+        color: #ffffff;
+    }
+
+    .orders-container {
+        max-width: 900px;
+        margin: 80px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 40px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        border-left: 4px solid #0070d1;
+        padding-left: 20px;
+    }
+
+    .order-card {
+        background: #0a0a0a;
+        border-radius: 4px;
+        padding: 0;
+        margin-bottom: 30px;
+        border: 1px solid #1a1a1a;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .order-card:hover {
+        border-color: #333;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #111;
+        padding: 15px 25px;
+        font-size: 0.8rem;
+        color: #a1a1aa;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .order-price {
+        font-weight: 700;
+        color: #0070d1;
+        font-size: 1rem;
+    }
+
+    .order-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .item-status-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+    }
+
+    .delivery-status {
+        border: 1px solid #1a1a1a;
+        border-radius: 2px;
+        padding: 8px 12px;
+        color: #e5e7eb;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .delivery-status.delivered {
+        color: #22c55e;
+        border-color: #14532d;
+    }
+
+    .feedback-registered-btn {
+        border: 1px solid #14532d;
+        border-radius: 2px;
+        padding: 8px 12px;
+        color: #22c55e;
+        background: transparent;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+    }
+
+    .feedback-registered-btn:hover {
+        color: #22c55e;
+        border-color: #22c55e;
+        background: rgba(34, 197, 94, 0.08);
+    }
+
+    .delivery-status.shipped {
+        color: #60a5fa;
+        border-color: #1d4ed8;
+    }
+
+    .feedback-btn {
+        background: #0070d1;
+        border: none;
+        border-radius: 2px;
+        color: #fff;
+        padding: 9px 14px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+    }
+
+    .feedback-btn:hover {
+        background: #005bb1;
+        color: #fff;
+    }
+
+    .order-body {
+        padding: 10px 25px;
+    }
+
+    .order-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid #1a1a1a;
+        align-items: center;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 2px;
+        overflow: hidden;
+        background: #151515;
+        flex-shrink: 0;
+        border: 1px solid #222;
+    }
+
+    .item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(20%);
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 4px;
+    }
+
+    .item-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0;
+        letter-spacing: -0.3px;
+    }
+
+    .item-qty {
+        font-size: 0.75rem;
+        color: #71717a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .item-price {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        margin-top: 5px;
+    }
+
+    .empty-box {
+        text-align: center;
+        padding: 100px 20px;
+        color: #71717a;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        background: #0a0a0a;
+    }
+
+    .empty-box i {
+        font-size: 3rem;
+        color: #1a1a1a;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    @media (max-width: 640px) {
+        .item-title-row {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .order-actions {
+            justify-content: flex-start;
+        }
+
+        .item-status-actions {
+            align-items: flex-start;
+        }
+    }
+</style>
+<div class="orders-container">
+    <h2 class="page-title">Purchase History</h2>
+    {% if orders %}
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <div>
+                    <span style="color: #444; margin-right: 10px;">PLACED ON</span>
+                    <span class="text-white">{{ order.created_at|date:"d M Y | H:i" }}</span>
+                </div>
+                <div class="order-actions">
+                    <div class="order-price">
+                        ₹{{ order.total_amount }}
+                    </div>
+                </div>
+            </div>
+            <div class="order-body">
+                {% for item in order.items.all %}
+                <div class="order-item">
+                    <div class="item-image">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product_name }}">
+                        {% endif %}
+                    </div>
+                    <div class="item-details">
+                        <div class="item-title-row">
+                            <div class="item-name">{{ item.product_name }}</div>
+                            <div class="item-status-actions">
+                                {% if order.status == 'Delivered' %}
+                                    <span class="delivery-status delivered">Item Delivered</span>
+                                    {% if item.feedback_registered %}
+                                        <a href="{% url 'customer_feedback' item.order_item_id %}" class="feedback-registered-btn">Feedback Registered</a>
+                                    {% else %}
+                                        <a href="{% url 'customer_feedback' item.order_item_id %}" class="feedback-btn">Add Feedback</a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="delivery-status shipped">Item Shipped</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="item-qty">Quantity: {{ item.quantity }}</div>
+                        <div class="item-price">₹{{ item.total_price }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-box">
+            <i class="bi bi-bag-x"></i>
+            <h4 class="text-white">No Orders Found</h4>
+            <p>You haven't made any purchases yet.</p>
+            <a href="{% url 'all_categories' %}" class="btn btn-primary mt-3" style="background: #0070d1; border: none; border-radius: 2px; padding: 10px 25px; font-weight: 700;">START SHOPPING</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
