@@ -1,0 +1,212 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+video,
+svg,
+canvas {
+    max-width: 100%;
+}
+
+img,
+video {
+    height: auto;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+.table,
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.container,
+.container-fluid,
+.max-w-7xl {
+    max-width: 100%;
+}
+
+.card,
+.product-card,
+.category-card,
+.stat-card,
+.glass-card,
+.order-card,
+.profile-card,
+.form-card,
+.summary-card,
+.bag-card {
+    min-width: 0;
+}
+
+.row {
+    min-width: 0;
+}
+
+.row > * {
+    min-width: 0;
+}
+
+.customer-nav-links {
+    min-width: 0;
+}
+
+@media (max-width: 992px) {
+    .admin-header,
+    .delivery-header {
+        padding: 14px 70px 14px 18px !important;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .content-wrapper {
+        padding: 28px 16px !important;
+    }
+
+    .admin-footer,
+    .delivery-footer {
+        padding: 20px 16px !important;
+        gap: 12px;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    h1,
+    .display-1,
+    .display-2,
+    .display-3,
+    .display-4 {
+        font-size: clamp(2rem, 10vw, 3.25rem) !important;
+        line-height: 1.05;
+    }
+
+    h2,
+    .display-5,
+    .display-6 {
+        font-size: clamp(1.5rem, 7vw, 2.4rem) !important;
+        line-height: 1.15;
+    }
+
+    .container,
+    .container-fluid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .navbar {
+        height: auto !important;
+        min-height: var(--nav-height, 64px);
+    }
+
+    .navbar-collapse {
+        background: rgba(0, 0, 0, 0.96);
+        border-top: 1px solid #1a1a1a;
+        margin-top: 8px;
+        padding: 12px 0 16px;
+    }
+
+    .navbar-nav {
+        gap: 4px;
+    }
+
+    .nav-link {
+        padding: 10px 0 !important;
+    }
+
+    .customer-nav-links {
+        display: flex !important;
+        flex: 1 1 100%;
+        order: 3;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 12px 2px 2px;
+        scrollbar-width: none;
+        white-space: nowrap;
+    }
+
+    .customer-nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .logo-text {
+        font-size: 1.2rem !important;
+        letter-spacing: 3px !important;
+    }
+
+    .logout-btn,
+    .btn-login,
+    .header-logout {
+        padding: 8px 12px !important;
+        white-space: nowrap;
+    }
+
+    .footer-input,
+    .footer-btn,
+    .btn-join {
+        min-height: 44px;
+    }
+
+    footer {
+        margin-top: 48px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .row {
+        --bs-gutter-x: 1rem;
+    }
+
+    .admin-header h6,
+    .delivery-header h6 {
+        font-size: 0.75rem;
+        max-width: 100%;
+    }
+
+    .admin-header .d-flex,
+    .delivery-header .d-flex {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .sidebar {
+        width: min(280px, 86vw) !important;
+    }
+
+    .input-group {
+        flex-wrap: nowrap;
+    }
+
+    .btn,
+    button,
+    input,
+    select,
+    textarea {
+        font-size: 0.95rem;
+    }
+}

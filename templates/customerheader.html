@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 
     <title>SONY | Sony Premium Audio & Alpha</title>
 
@@ -143,7 +144,7 @@
 
             <div class="logo-text">SONY</div>
 
-            <div class="hidden md:flex space-x-10">
+            <div class="hidden md:flex space-x-10 customer-nav-links">
                 <a href="{% url 'cuthome' %}" class="nav-link-custom">Store</a>
                 <a href="{% url 'cutcategory' %}" class="nav-link-custom">Lenses & Audio</a>
                 <a href="{% url 'customer_profile' %}" class="nav-link-custom">My Account</a>
