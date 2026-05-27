@@ -276,7 +276,7 @@ def customer_register(request):
         custobj.address = request.POST.get('address')
         custobj.save()
 
-        return HttpResponse("<script>alert('Customer registered successfully!');window.location='/customer_register/';</script>")
+        return HttpResponse("<script>alert('Customer registered successfully!');window.location='/login/';</script>")
 
     districts = Disctrict.objects.all()
     locations = Location.objects.all()
