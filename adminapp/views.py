@@ -19,7 +19,7 @@ import json
 
 
 def mainpage(request):
-    return render(request, 'mainpage.html')
+    return render(request, 'admin/indexpage.html')
 
 
 def addproduct(request):
